@@ -1,8 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#07111f">
 <title>Timer Respon Kesehatan</title>
 
@@ -10,7 +10,7 @@
 :root{
   --bg:#07111f;
   --card:#0d1b2d;
-  --card2:#11243a;
+  --card2:#13263d;
   --text:#f5f7fb;
   --muted:#9fb0c5;
   --accent:#35d0ba;
@@ -22,8 +22,7 @@
   box-sizing:border-box;
 }
 
-html,
-body{
+html,body{
   margin:0;
   width:100%;
   min-height:100%;
@@ -31,42 +30,47 @@ body{
 
 body{
   min-height:100vh;
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  padding:20px;
+  font-family:Arial,Helvetica,sans-serif;
   background:
-    radial-gradient(circle at 50% -10%,#183b5b 0,#07111f 48%);
+    radial-gradient(
+      circle at 50% -10%,
+      #183b5b 0,
+      #07111f 52%
+    );
   color:var(--text);
   display:flex;
-  align-items:center;
   justify-content:center;
-  padding:24px;
+  align-items:center;
 }
 
 button,
 input{
-  font:inherit;
+  font-family:inherit;
 }
 
 button{
   border:0;
+  cursor:pointer;
 }
 
 .app{
-  width:min(1200px,100%);
+  width:min(1250px,100%);
   display:grid;
-  grid-template-columns:minmax(0,1.5fr) minmax(300px,.8fr);
+  grid-template-columns:minmax(0,1.55fr) minmax(290px,.8fr);
   gap:18px;
 }
 
 .card{
-  background:rgba(13,27,45,.97);
+  background:rgba(13,27,45,.98);
   border:1px solid rgba(255,255,255,.08);
   border-radius:24px;
-  box-shadow:0 20px 70px rgba(0,0,0,.3);
+  box-shadow:0 20px 70px rgba(0,0,0,.35);
   overflow:hidden;
 }
 
 .main{
-  padding:34px;
+  padding:32px;
 }
 
 .side{
@@ -77,40 +81,38 @@ button{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:15px;
 }
 
 .badge{
-  font-size:13px;
   color:var(--accent);
-  font-weight:800;
+  font-size:13px;
+  font-weight:900;
   letter-spacing:.08em;
   text-transform:uppercase;
 }
 
 h1{
-  font-size:clamp(24px,4vw,42px);
-  line-height:1.12;
   margin:14px 0 10px;
+  font-size:clamp(24px,4vw,42px);
+  line-height:1.1;
 }
 
 .question{
   min-height:90px;
-  color:#dce7f3;
-  font-size:clamp(18px,2.2vw,25px);
-  line-height:1.45;
   margin:0;
+  color:#dce7f3;
+  font-size:clamp(18px,2.2vw,26px);
+  line-height:1.45;
 }
 
 .timer{
-  font-variant-numeric:tabular-nums;
+  margin:25px 0 14px;
   text-align:center;
-  font-size:clamp(86px,14vw,150px);
+  font-size:clamp(85px,14vw,155px);
+  line-height:1;
   font-weight:900;
   letter-spacing:-.06em;
-  line-height:1;
-  margin:28px 0 12px;
-  transition:color .2s ease;
+  font-variant-numeric:tabular-nums;
 }
 
 .timer.warning{
@@ -120,36 +122,35 @@ h1{
 
 .timer.danger{
   color:var(--danger);
-  animation:pulse .55s infinite alternate;
+  animation:dangerPulse .6s infinite alternate;
 }
 
 .timer.last10{
   color:var(--danger);
-  animation:lastTen .5s infinite alternate;
+  animation:lastTen .45s infinite alternate;
 }
 
 .timer.expired{
   color:var(--danger);
-  animation:expiredFlash .28s infinite alternate;
+  animation:expired .25s infinite alternate;
 }
 
 @keyframes warningPulse{
   from{
-    text-shadow:0 0 0 rgba(255,189,74,0);
+    text-shadow:0 0 0 transparent;
   }
   to{
-    text-shadow:0 0 25px rgba(255,189,74,.4);
+    text-shadow:0 0 30px rgba(255,189,74,.55);
   }
 }
 
-@keyframes pulse{
+@keyframes dangerPulse{
   from{
     transform:scale(1);
-    text-shadow:0 0 0 rgba(255,77,95,0);
   }
   to{
     transform:scale(1.025);
-    text-shadow:0 0 35px rgba(255,77,95,.5);
+    text-shadow:0 0 35px rgba(255,77,95,.6);
   }
 }
 
@@ -159,230 +160,124 @@ h1{
     opacity:1;
   }
   to{
-    transform:scale(1.07);
-    opacity:.4;
-    text-shadow:0 0 50px rgba(255,77,95,.9);
+    transform:scale(1.08);
+    opacity:.45;
+    text-shadow:0 0 55px rgba(255,77,95,1);
   }
 }
 
-@keyframes expiredFlash{
+@keyframes expired{
   from{
     transform:scale(1);
     opacity:1;
   }
   to{
-    transform:scale(1.07);
+    transform:scale(1.08);
     opacity:.3;
-    text-shadow:0 0 65px rgba(255,77,95,1);
   }
 }
 
 .progress{
-  height:10px;
-  background:#1a2b40;
-  border-radius:99px;
-  overflow:hidden;
-}
-
-.progress>div{
-  height:100%;
   width:100%;
-  background:var(--accent);
-  transition:width .2s linear;
+  height:10px;
+  overflow:hidden;
+  border-radius:50px;
+  background:#1a2b40;
 }
 
-.progress.warning>div{
+.progress-bar{
+  width:100%;
+  height:100%;
+  background:var(--accent);
+  transition:width .15s linear;
+}
+
+.progress.warning .progress-bar{
   background:var(--warning);
 }
 
-.progress.danger>div{
+.progress.danger .progress-bar{
   background:var(--danger);
 }
 
 .meta{
   display:flex;
   justify-content:space-between;
-  color:var(--muted);
-  font-size:14px;
   margin-top:9px;
+  color:var(--muted);
+  font-size:13px;
 }
 
 .finished{
-  text-align:center;
-  font-size:18px;
-  font-weight:900;
-  color:var(--danger);
   min-height:28px;
-  margin-top:8px;
-  animation:expiredFlash .5s infinite alternate;
+  margin-top:10px;
+  color:var(--danger);
+  text-align:center;
+  font-size:19px;
+  font-weight:900;
 }
 
 .controls{
   display:grid;
   grid-template-columns:1.5fr 1fr 1fr;
-  gap:10px;
-  margin-top:26px;
+  gap:9px;
+  margin-top:24px;
 }
 
 .controls.secondary{
-  grid-template-columns:1fr 1fr 1fr 1fr;
-  margin-top:10px;
+  grid-template-columns:repeat(4,1fr);
+  margin-top:9px;
 }
 
 button{
-  padding:15px 16px;
-  border-radius:14px;
+  padding:14px;
+  border-radius:13px;
   background:var(--card2);
-  color:var(--text);
-  font-size:15px;
+  color:white;
+  font-size:14px;
   font-weight:800;
-  cursor:pointer;
-  transition:.15s;
 }
 
 button:hover{
   filter:brightness(1.15);
-  transform:translateY(-1px);
-}
-
-button:active{
-  transform:translateY(0);
 }
 
 button.primary{
   background:var(--accent);
-  color:#06201c;
+  color:#05221d;
 }
 
 button.danger{
-  background:#4a1d27;
+  background:#4b1c28;
 }
-
-.shortcut{
-  margin-top:14px;
-  text-align:center;
-  color:var(--muted);
-  font-size:12px;
-}
-
-.list-title{
-  font-weight:900;
-  font-size:18px;
-  margin-bottom:12px;
-}
-
-.list{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  max-height:620px;
-  overflow:auto;
-  padding-right:4px;
-}
-
-.item{
-  display:grid;
-  grid-template-columns:38px minmax(0,1fr) 52px;
-  gap:8px;
-  align-items:center;
-  padding:11px;
-  border-radius:12px;
-  cursor:pointer;
-  border:1px solid transparent;
-  background:rgba(255,255,255,.035);
-}
-
-.item:hover{
-  background:rgba(255,255,255,.07);
-}
-
-.item.active{
-  border-color:var(--accent);
-  background:rgba(53,208,186,.08);
-}
-
-.num{
-  font-weight:900;
-  color:var(--accent);
-}
-
-.q{
-  font-size:13px;
-  line-height:1.3;
-}
-
-.dur{
-  font-size:12px;
-  text-align:right;
-  color:var(--muted);
-  font-weight:800;
-}
-
-.settings{
-  margin-top:16px;
-  padding-top:16px;
-  border-top:1px solid rgba(255,255,255,.08);
-}
-
-label{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  color:var(--muted);
-  font-size:13px;
-  margin:12px 0;
-}
-
-input[type="number"]{
-  width:80px;
-  background:#091625;
-  border:1px solid #263a52;
-  color:white;
-  border-radius:8px;
-  padding:8px;
-}
-
-input[type="checkbox"]{
-  width:18px;
-  height:18px;
-  accent-color:var(--accent);
-}
-
-
-/* ========================================
-   TEST TIMER
-======================================== */
 
 .test-panel{
   margin-top:20px;
-  padding:18px;
+  padding:17px;
+  border:1px solid rgba(255,255,255,.08);
   border-radius:16px;
   background:rgba(255,255,255,.035);
-  border:1px solid rgba(255,255,255,.07);
 }
 
 .test-title{
+  margin-bottom:12px;
+  color:var(--accent);
   font-size:13px;
   font-weight:900;
-  color:var(--accent);
   letter-spacing:.06em;
-  margin-bottom:12px;
 }
 
 #testSlider{
   width:100%;
   accent-color:var(--accent);
-  cursor:pointer;
 }
 
 .test-time{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  color:var(--muted);
-  font-size:13px;
   margin:7px 0 12px;
+  color:var(--muted);
 }
 
 .test-time strong{
@@ -398,26 +293,111 @@ input[type="checkbox"]{
 }
 
 .test-buttons button{
-  padding:11px 8px;
+  padding:11px 7px;
   font-size:12px;
 }
 
 .voice-status{
-  margin-top:10px;
   min-height:18px;
+  margin-top:10px;
   text-align:center;
   color:var(--muted);
   font-size:11px;
 }
 
+.list-title{
+  margin-bottom:12px;
+  font-size:18px;
+  font-weight:900;
+}
 
-/* ========================================
-   COMPACT
-======================================== */
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  max-height:620px;
+  overflow:auto;
+}
+
+.item{
+  display:grid;
+  grid-template-columns:36px 1fr 48px;
+  gap:8px;
+  align-items:center;
+  padding:11px;
+  border:1px solid transparent;
+  border-radius:12px;
+  background:rgba(255,255,255,.035);
+  cursor:pointer;
+}
+
+.item.active{
+  border-color:var(--accent);
+  background:rgba(53,208,186,.08);
+}
+
+.num{
+  color:var(--accent);
+  font-weight:900;
+}
+
+.q{
+  font-size:13px;
+  line-height:1.35;
+}
+
+.dur{
+  color:var(--muted);
+  text-align:right;
+  font-size:12px;
+}
+
+.settings{
+  margin-top:16px;
+  padding-top:15px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+
+label{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin:12px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+input[type="number"]{
+  width:70px;
+  padding:7px;
+  border:1px solid #263a52;
+  border-radius:8px;
+  background:#091625;
+  color:white;
+}
+
+input[type="checkbox"]{
+  width:18px;
+  height:18px;
+  accent-color:var(--accent);
+}
+
+.shortcut{
+  margin-top:13px;
+  color:var(--muted);
+  text-align:center;
+  font-size:11px;
+}
+
+
+/* ==============================
+   MODE MINIMIZE
+============================== */
 
 body.compact .app{
+  width:min(1500px,100%);
   grid-template-columns:1fr;
-  max-width:1500px;
 }
 
 body.compact .side{
@@ -425,35 +405,35 @@ body.compact .side{
 }
 
 body.compact .main{
-  min-height:calc(100vh - 48px);
+  min-height:calc(100vh - 40px);
   display:flex;
   flex-direction:column;
   justify-content:center;
-  padding:clamp(30px,6vw,90px);
   position:relative;
+  padding:70px clamp(25px,6vw,90px);
 }
 
 body.compact .top{
   position:absolute;
-  left:clamp(30px,5vw,80px);
-  right:clamp(30px,5vw,80px);
-  top:28px;
+  top:25px;
+  left:clamp(25px,6vw,90px);
+  right:clamp(25px,6vw,90px);
 }
 
 body.compact .question{
-  max-width:1100px;
-  font-size:clamp(24px,3vw,42px);
+  max-width:1150px;
+  font-size:clamp(25px,3vw,43px);
 }
 
 body.compact .timer{
-  font-size:clamp(120px,22vw,260px);
-  margin:clamp(30px,5vh,70px) 0;
+  font-size:clamp(120px,22vw,270px);
+  margin:35px 0 20px;
 }
 
 body.compact .controls,
 body.compact .test-panel{
-  max-width:1000px;
   width:100%;
+  max-width:1050px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -463,14 +443,14 @@ body.compact .shortcut{
 }
 
 
-/* ========================================
+/* ==============================
    MOBILE
-======================================== */
+============================== */
 
 @media(max-width:800px){
 
   body{
-    padding:12px;
+    padding:10px;
   }
 
   .app{
@@ -478,7 +458,7 @@ body.compact .shortcut{
   }
 
   .main{
-    padding:24px;
+    padding:22px;
   }
 
   .side{
@@ -486,7 +466,7 @@ body.compact .shortcut{
   }
 
   .timer{
-    font-size:90px;
+    font-size:85px;
   }
 
   .controls,
@@ -499,12 +479,12 @@ body.compact .shortcut{
   }
 
   .list{
-    max-height:320px;
+    max-height:330px;
   }
 
   body.compact .main{
     min-height:100vh;
-    padding:28px;
+    padding:35px 20px;
   }
 
   body.compact .top{
@@ -526,13 +506,11 @@ body.compact .shortcut{
 <section class="card main">
 
   <div class="top">
-
     <div class="badge">
       TIMER RESPON KESEHATAN
     </div>
 
     <div id="clock" class="badge"></div>
-
   </div>
 
 
@@ -550,27 +528,18 @@ body.compact .shortcut{
 
 
   <div id="progress" class="progress">
-    <div id="bar"></div>
+    <div id="bar" class="progress-bar"></div>
   </div>
 
 
   <div class="meta">
-
-    <span id="elapsed">
-      0:00
-    </span>
-
-    <span id="durationLabel">
-      10 menit
-    </span>
-
+    <span id="elapsed">00:00</span>
+    <span id="durationLabel">10 menit</span>
   </div>
 
 
   <div id="finished" class="finished"></div>
 
-
-  <!-- KONTROL UTAMA -->
 
   <div class="controls">
 
@@ -610,12 +579,12 @@ body.compact .shortcut{
   </div>
 
 
-  <!-- TEST TIMER -->
+  <!-- TEST -->
 
   <div class="test-panel">
 
     <div class="test-title">
-      🧪 TEST TIMER & SUARA
+      🧪 TEST TIMER & SUARA MANUSIA
     </div>
 
 
@@ -630,15 +599,10 @@ body.compact .shortcut{
 
 
     <div class="test-time">
-
-      <span>
-        Geser waktu:
-      </span>
-
+      <span>Waktu test:</span>
       <strong id="testSliderValue">
         10:00
       </strong>
-
     </div>
 
 
@@ -648,56 +612,50 @@ body.compact .shortcut{
         id="testVoice"
         class="primary"
       >
-        🗣️ Test Suara
+        🗣️ TEST SUARA
       </button>
 
       <button id="test5">
-        🔊 5 Menit
+        🔊 TEST 5 MENIT
       </button>
 
       <button id="test1">
-        🔊 1 Menit
+        🔊 TEST 1 MENIT
       </button>
 
       <button id="test10">
-        🔊 10 Detik
+        🔊 TEST 10 DETIK
       </button>
 
       <button
         id="testEnd"
         class="danger"
       >
-        🔊 Waktu Habis
+        🔊 TEST HABIS
       </button>
 
     </div>
 
 
-    <div
-      id="voiceStatus"
-      class="voice-status"
-    >
-      Tekan "Test Suara" untuk memastikan suara manusia aktif.
+    <div id="voiceStatus" class="voice-status">
+      Tekan TEST SUARA terlebih dahulu.
     </div>
 
   </div>
 
 
   <div class="shortcut">
-    Spasi = mulai/jeda · ←/→ = pindah · R = ulangi · F = fullscreen · M = minimize
+    Spasi = mulai/jeda · ←/→ = pertanyaan · R = ulangi · F = fullscreen · M = minimize
   </div>
 
 </section>
 
-
-<!-- SIDEBAR -->
 
 <aside class="card side">
 
   <div class="list-title">
     Daftar Pertanyaan
   </div>
-
 
   <div id="list" class="list"></div>
 
@@ -715,7 +673,7 @@ body.compact .shortcut{
 
 
     <label>
-      Otomatis lanjut setelah waktu habis
+      Otomatis lanjut
       <input
         id="autoNext"
         type="checkbox"
@@ -744,9 +702,9 @@ body.compact .shortcut{
 
 <script>
 
-/* ========================================
-   DATA PERTANYAAN
-======================================== */
+/* =====================================================
+   DATA
+===================================================== */
 
 const QUESTIONS = [
 
@@ -813,98 +771,109 @@ const QUESTIONS = [
 ];
 
 
-/* ========================================
+/* =====================================================
    STATE
-======================================== */
+===================================================== */
 
 let index = 0;
 
-let total = QUESTIONS[0][1] * 60;
+let totalSeconds =
+  QUESTIONS[0][1] * 60;
 
-let remaining = total;
+let remaining =
+  totalSeconds;
 
 let running = false;
 
-let lastTimestamp = 0;
+let lastTime = 0;
 
-let animationFrame = 0;
+let animationId = 0;
 
-let alarmTimer = 0;
+let finishTimerId = 0;
 
-let alarmInterval = 0;
+let alarmId = 0;
 
 let audioContext = null;
 
-let voices = [];
+
+/*
+  PENTING:
+  Utterance disimpan dalam variable global.
+  Ini menghindari beberapa browser membuang
+  object speech sebelum selesai.
+*/
+
+let currentSpeech = null;
+
+let availableVoices = [];
 
 let fiveMinuteAnnounced = false;
 
 let oneMinuteAnnounced = false;
 
-let lastSecondBeep = -1;
+let lastBeepSecond = -1;
 
 
-/* ========================================
-   ELEMENT HELPER
-======================================== */
+/* =====================================================
+   ELEMENT
+===================================================== */
 
-const $ = id =>
-  document.getElementById(id);
+const $ =
+  id => document.getElementById(id);
 
-
-const timerEl =
+const timerElement =
   $("timer");
 
-const bar =
-  $("bar");
-
-const titleEl =
-  $("title");
-
-const questionEl =
+const questionElement =
   $("question");
 
-const elapsedEl =
+const titleElement =
+  $("title");
+
+const elapsedElement =
   $("elapsed");
 
-const durationLabelEl =
+const durationElement =
   $("durationLabel");
 
-const finishedEl =
+const finishedElement =
   $("finished");
 
-const listEl =
+const progressElement =
+  $("bar");
+
+const listElement =
   $("list");
 
-const testSlider =
+const slider =
   $("testSlider");
 
-const testSliderValue =
+const sliderValue =
   $("testSliderValue");
 
 const voiceStatus =
   $("voiceStatus");
 
 
-/* ========================================
-   FORMAT WAKTU
-======================================== */
+/* =====================================================
+   FORMAT
+===================================================== */
 
-function formatTime(seconds){
+function formatTime(value){
 
-  const safe =
+  const seconds =
     Math.max(
       0,
-      Math.ceil(seconds)
+      Math.ceil(value)
     );
 
   const minutes =
     Math.floor(
-      safe / 60
+      seconds / 60
     );
 
   const secs =
-    safe % 60;
+    seconds % 60;
 
   return (
     String(minutes).padStart(2,"0")
@@ -916,75 +885,65 @@ function formatTime(seconds){
 }
 
 
-/* ========================================
-   LOAD VOICES
-======================================== */
+/* =====================================================
+   VOICE ENGINE
+===================================================== */
 
-function loadVoices(){
+function refreshVoices(){
 
   if(
     !("speechSynthesis" in window)
   ){
+
+    availableVoices = [];
+
     return;
+
   }
 
-  voices =
+  availableVoices =
     window.speechSynthesis.getVoices();
 
 }
 
 
-/*
-  Voice pada Chrome/Safari sering
-  baru tersedia setelah event ini.
-*/
-
 if(
   "speechSynthesis" in window
 ){
 
-  loadVoices();
+  refreshVoices();
 
-  window.speechSynthesis
-    .addEventListener(
-      "voiceschanged",
-      loadVoices
-    );
+  window.speechSynthesis.addEventListener(
+    "voiceschanged",
+    refreshVoices
+  );
 
 }
 
 
-/* ========================================
-   PILIH VOICE INDONESIA
-======================================== */
+/*
+  Cari voice Indonesia.
+*/
 
-function getIndonesianVoice(){
+function findIndonesianVoice(){
 
-  loadVoices();
+  refreshVoices();
 
-
-  /*
-    Prioritas ID-ID.
-  */
 
   let voice =
-    voices.find(
+    availableVoices.find(
       item =>
         String(item.lang)
           .toLowerCase()
           .replace("_","-")
-          .startsWith("id-id")
+          === "id-id"
     );
 
-
-  /*
-    Kemudian semua bahasa Indonesia.
-  */
 
   if(!voice){
 
     voice =
-      voices.find(
+      availableVoices.find(
         item =>
           String(item.lang)
             .toLowerCase()
@@ -995,65 +954,47 @@ function getIndonesianVoice(){
   }
 
 
-  /*
-    Kemudian nama voice yang mengandung
-    Indonesia / Indonesian.
-  */
-
   if(!voice){
 
     voice =
-      voices.find(
+      availableVoices.find(
         item =>
           /indonesia|indonesian/i
-            .test(item.name)
+            .test(
+              String(item.name)
+            )
       );
 
   }
 
 
-  /*
-    Jika perangkat tidak menyediakan
-    voice Indonesia, gunakan voice
-    yang tersedia sebagai fallback.
-  */
-
-  if(!voice){
-
-    voice =
-      voices[0] || null;
-
-  }
-
-
-  return voice;
+  return voice || null;
 }
 
 
-/* ========================================
-   AKTIFKAN AUDIO
-======================================== */
+/* =====================================================
+   UNLOCK AUDIO
+===================================================== */
 
 function unlockAudio(){
 
   /*
-    Web Audio
+    Web Audio untuk beep.
   */
 
   try{
 
-    if(!audioContext){
+    const AudioContext =
+      window.AudioContext ||
+      window.webkitAudioContext;
 
-      const AudioContext =
-        window.AudioContext ||
-        window.webkitAudioContext;
+    if(
+      AudioContext &&
+      !audioContext
+    ){
 
-      if(AudioContext){
-
-        audioContext =
-          new AudioContext();
-
-      }
+      audioContext =
+        new AudioContext();
 
     }
 
@@ -1070,16 +1011,13 @@ function unlockAudio(){
 
   }catch(error){
 
-    console.warn(
-      "Audio context:",
-      error
-    );
+    console.warn(error);
 
   }
 
 
   /*
-    Speech synthesis
+    Speech engine.
   */
 
   try{
@@ -1090,25 +1028,22 @@ function unlockAudio(){
 
       window.speechSynthesis.resume();
 
-      loadVoices();
+      refreshVoices();
 
     }
 
   }catch(error){
 
-    console.warn(
-      "Speech synthesis:",
-      error
-    );
+    console.warn(error);
 
   }
 
 }
 
 
-/* ========================================
+/* =====================================================
    SUARA MANUSIA
-======================================== */
+===================================================== */
 
 function speak(text){
 
@@ -1116,7 +1051,7 @@ function speak(text){
     !$("sound").checked
   ){
 
-    return false;
+    return;
 
   }
 
@@ -1128,152 +1063,140 @@ function speak(text){
     voiceStatus.textContent =
       "Browser tidak mendukung suara manusia.";
 
-    return false;
+    return;
 
   }
 
 
+  unlockAudio();
+
+
+  const synth =
+    window.speechSynthesis;
+
+
+  /*
+    Jangan cancel sebelum membuat
+    utterance baru.
+  */
+
   try{
 
-    unlockAudio();
+    if(synth.paused){
 
-
-    const synth =
-      window.speechSynthesis;
-
-
-    synth.cancel();
-
-    synth.resume();
-
-
-    const voice =
-      getIndonesianVoice();
-
-
-    const utterance =
-      new SpeechSynthesisUtterance(
-        text
-      );
-
-
-    if(voice){
-
-      utterance.voice =
-        voice;
-
-      utterance.lang =
-        voice.lang || "id-ID";
-
-    }else{
-
-      utterance.lang =
-        "id-ID";
+      synth.resume();
 
     }
 
-
-    /*
-      Kecepatan dibuat agak lambat
-      supaya jelas ketika diputar
-      melalui speaker ruangan.
-    */
-
-    utterance.rate =
-      0.82;
-
-    utterance.pitch =
-      1;
-
-    utterance.volume =
-      1;
+  }catch{}
 
 
-    utterance.onstart =
-      () => {
-
-        voiceStatus.textContent =
-          "🔊 Suara manusia sedang diputar.";
-
-      };
+  const voice =
+    findIndonesianVoice();
 
 
-    utterance.onend =
-      () => {
+  /*
+    Buat utterance baru dan simpan
+    secara global.
+  */
 
-        voiceStatus.textContent =
-          "✓ Suara selesai.";
-
-      };
-
-
-    utterance.onerror =
-      event => {
-
-        console.warn(
-          "Speech error:",
-          event
-        );
-
-        voiceStatus.textContent =
-          "⚠️ Suara manusia gagal diputar.";
-
-      };
-
-
-    /*
-      Timeout kecil membuat sistem
-      lebih stabil pada browser yang
-      baru saja resume speech engine.
-    */
-
-    window.setTimeout(
-      () => {
-
-        try{
-
-          synth.resume();
-
-          synth.speak(
-            utterance
-          );
-
-        }catch(error){
-
-          console.error(
-            "Speech:",
-            error
-          );
-
-        }
-
-      },
-      80
+  const utterance =
+    new SpeechSynthesisUtterance(
+      text
     );
 
 
-    return true;
+  currentSpeech =
+    utterance;
+
+
+  utterance.lang =
+    voice
+      ? voice.lang
+      : "id-ID";
+
+
+  if(voice){
+
+    utterance.voice =
+      voice;
+
+  }
+
+
+  utterance.rate =
+    0.78;
+
+  utterance.pitch =
+    1;
+
+  utterance.volume =
+    1;
+
+
+  utterance.onstart =
+    function(){
+
+      voiceStatus.textContent =
+        "🔊 SUARA MANUSIA AKTIF";
+
+    };
+
+
+  utterance.onend =
+    function(){
+
+      voiceStatus.textContent =
+        "✓ Suara selesai.";
+
+      currentSpeech =
+        null;
+
+    };
+
+
+  utterance.onerror =
+    function(event){
+
+      console.error(
+        "Speech error:",
+        event
+      );
+
+      voiceStatus.textContent =
+        "⚠️ Browser gagal memainkan suara manusia.";
+
+      currentSpeech =
+        null;
+
+    };
+
+
+  /*
+    Bicara langsung.
+    Tidak menggunakan setTimeout.
+  */
+
+  try{
+
+    synth.speak(
+      utterance
+    );
 
   }catch(error){
 
     console.error(
-      "Speech:",
       error
     );
-
-    voiceStatus.textContent =
-      "⚠️ Terjadi masalah pada suara.";
-
-    return false;
 
   }
 
 }
 
 
-/* ========================================
+/* =====================================================
    BEEP
-======================================== */
+===================================================== */
 
 function beep(
   frequency = 880,
@@ -1315,6 +1238,7 @@ function beep(
     oscillator.frequency.value =
       frequency;
 
+
     gain.gain.setValueAtTime(
       volume,
       audioContext.currentTime
@@ -1346,7 +1270,7 @@ function beep(
   }catch(error){
 
     console.warn(
-      "Beep:",
+      "Beep error:",
       error
     );
 
@@ -1355,79 +1279,90 @@ function beep(
 }
 
 
-/* ========================================
-   STOP ALARM
-======================================== */
+/* =====================================================
+   STOP EVERYTHING
+===================================================== */
 
-function stopAlarm(){
+function stopAll(){
 
-  if(alarmTimer){
+  running = false;
 
-    clearTimeout(
-      alarmTimer
+
+  if(animationId){
+
+    cancelAnimationFrame(
+      animationId
     );
 
-    alarmTimer = 0;
+    animationId = 0;
 
   }
 
 
-  if(alarmInterval){
+  if(finishTimerId){
 
     clearTimeout(
-      alarmInterval
+      finishTimerId
     );
 
-    alarmInterval = 0;
+    finishTimerId = 0;
+
+  }
+
+
+  if(alarmId){
+
+    clearTimeout(
+      alarmId
+    );
+
+    alarmId = 0;
 
   }
 
 }
 
 
-/* ========================================
+/* =====================================================
    RENDER
-======================================== */
+===================================================== */
 
 function render(){
 
-  const question =
-    QUESTIONS[index][0];
+  const [
+    question,
+    minutes
+  ] =
+    QUESTIONS[index];
 
-  const minutes =
-    QUESTIONS[index][1];
 
-
-  /*
-    Jangan mengubah total berdasarkan
-    slider testing setelah timer berjalan.
-  */
-
-  titleEl.textContent =
+  titleElement.textContent =
     `Pertanyaan ${index + 1} dari ${QUESTIONS.length}`;
 
 
-  questionEl.textContent =
+  questionElement.textContent =
     question;
 
 
-  durationLabelEl.textContent =
+  durationElement.textContent =
     `${minutes} menit`;
 
 
-  timerEl.textContent =
-    formatTime(remaining);
+  timerElement.textContent =
+    formatTime(
+      remaining
+    );
 
 
   /*
-    Warna timer
+    Warna.
   */
 
   if(
     remaining <= 0
   ){
 
-    timerEl.className =
+    timerElement.className =
       "timer expired";
 
   }
@@ -1435,7 +1370,7 @@ function render(){
     remaining <= 10
   ){
 
-    timerEl.className =
+    timerElement.className =
       "timer last10";
 
   }
@@ -1443,7 +1378,7 @@ function render(){
     remaining <= 60
   ){
 
-    timerEl.className =
+    timerElement.className =
       "timer danger";
 
   }
@@ -1451,43 +1386,53 @@ function render(){
     remaining <= 300
   ){
 
-    timerEl.className =
+    timerElement.className =
       "timer warning";
 
   }
   else{
 
-    timerEl.className =
+    timerElement.className =
       "timer";
 
   }
 
 
   /*
-    Progress
+    Progress.
   */
 
   const percentage =
-    total > 0
+    totalSeconds > 0
       ? Math.max(
           0,
           Math.min(
             100,
-            remaining / total * 100
+            remaining /
+            totalSeconds *
+            100
           )
         )
       : 0;
 
 
-  bar.style.width =
-    `${percentage}%`;
+  progressElement.style.width =
+    percentage + "%";
+
+
+  /*
+    Progress color.
+  */
+
+  const progress =
+    progressElement.parentElement;
 
 
   if(
     remaining <= 60
   ){
 
-    $("progress").className =
+    progress.className =
       "progress danger";
 
   }
@@ -1495,40 +1440,37 @@ function render(){
     remaining <= 300
   ){
 
-    $("progress").className =
+    progress.className =
       "progress warning";
 
   }
   else{
 
-    $("progress").className =
+    progress.className =
       "progress";
 
   }
 
 
-  elapsedEl.textContent =
+  elapsedElement.textContent =
     formatTime(
-      total - remaining
+      totalSeconds -
+      remaining
     );
 
 
-  finishedEl.textContent =
+  finishedElement.textContent =
     remaining <= 0
       ? "⏰ WAKTU SUDAH HABIS"
       : "";
 
 
-  /*
-    Active question
-  */
-
   Array.from(
-    listEl.children
+    listElement.children
   ).forEach(
-    (element,position) => {
+    (item,position) => {
 
-      element.classList.toggle(
+      item.classList.toggle(
         "active",
         position === index
       );
@@ -1537,64 +1479,56 @@ function render(){
   );
 
 
-  /*
-    Test slider
-  */
-
-  if(testSlider){
-
-    const sliderMaximum =
-      Math.max(
-        1,
-        total
-      );
+  slider.max =
+    Math.max(
+      totalSeconds,
+      1
+    );
 
 
-    testSlider.max =
-      sliderMaximum;
-
-
-    testSlider.value =
-      Math.max(
-        0,
-        Math.min(
-          sliderMaximum,
-          remaining
-        )
-      );
-
-
-    testSliderValue.textContent =
-      formatTime(
+  slider.value =
+    Math.max(
+      0,
+      Math.min(
+        totalSeconds,
         remaining
-      );
+      )
+    );
 
-  }
+
+  sliderValue.textContent =
+    formatTime(
+      remaining
+    );
 
 }
 
 
-/* ========================================
-   RENDER LIST
-======================================== */
+/* =====================================================
+   QUESTION LIST
+===================================================== */
 
-function renderList(){
+function renderQuestionList(){
 
-  listEl.innerHTML = "";
+  listElement.innerHTML = "";
 
 
   QUESTIONS.forEach(
     ([question,minutes],position) => {
 
       const item =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
 
       item.className =
         "item";
 
 
-      if(position === index){
+      if(
+        position === index
+      ){
 
         item.classList.add(
           "active"
@@ -1604,7 +1538,9 @@ function renderList(){
 
 
       const number =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       number.className =
         "num";
@@ -1614,7 +1550,9 @@ function renderList(){
 
 
       const text =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       text.className =
         "q";
@@ -1624,20 +1562,22 @@ function renderList(){
 
 
       const duration =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       duration.className =
         "dur";
 
       duration.textContent =
-        `${minutes} m`;
+        minutes + " m";
 
 
-      item.appendChild(number);
-
-      item.appendChild(text);
-
-      item.appendChild(duration);
+      item.append(
+        number,
+        text,
+        duration
+      );
 
 
       item.addEventListener(
@@ -1652,7 +1592,7 @@ function renderList(){
       );
 
 
-      listEl.appendChild(
+      listElement.appendChild(
         item
       );
 
@@ -1662,48 +1602,13 @@ function renderList(){
 }
 
 
-/* ========================================
-   STOP TIMER
-======================================== */
-
-function stopTimer(){
-
-  running =
-    false;
-
-
-  if(animationFrame){
-
-    cancelAnimationFrame(
-      animationFrame
-    );
-
-    animationFrame = 0;
-
-  }
-
-
-  stopAlarm();
-
-}
-
-
-/* ========================================
+/* =====================================================
    SELECT QUESTION
-======================================== */
+===================================================== */
 
 function selectQuestion(position){
 
-  stopTimer();
-
-
-  if(
-    "speechSynthesis" in window
-  ){
-
-    window.speechSynthesis.cancel();
-
-  }
+  stopAll();
 
 
   index =
@@ -1716,12 +1621,12 @@ function selectQuestion(position){
     );
 
 
-  total =
+  totalSeconds =
     QUESTIONS[index][1] * 60;
 
 
   remaining =
-    total;
+    totalSeconds;
 
 
   fiveMinuteAnnounced =
@@ -1730,12 +1635,8 @@ function selectQuestion(position){
   oneMinuteAnnounced =
     false;
 
-  lastSecondBeep =
+  lastBeepSecond =
     -1;
-
-
-  finishedEl.textContent =
-    "";
 
 
   $("start").textContent =
@@ -1747,14 +1648,14 @@ function selectQuestion(position){
 
   render();
 
-  renderList();
+  renderQuestionList();
 
 }
 
 
-/* ========================================
-   START TIMER
-======================================== */
+/* =====================================================
+   START
+===================================================== */
 
 function startTimer(){
 
@@ -1766,7 +1667,7 @@ function startTimer(){
   ){
 
     remaining =
-      total;
+      totalSeconds;
 
   }
 
@@ -1775,7 +1676,7 @@ function startTimer(){
     true;
 
 
-  lastTimestamp =
+  lastTime =
     performance.now();
 
 
@@ -1793,7 +1694,7 @@ function startTimer(){
   );
 
 
-  animationFrame =
+  animationId =
     requestAnimationFrame(
       timerLoop
     );
@@ -1801,9 +1702,9 @@ function startTimer(){
 }
 
 
-/* ========================================
+/* =====================================================
    PAUSE
-======================================== */
+===================================================== */
 
 function pauseTimer(){
 
@@ -1820,13 +1721,13 @@ function pauseTimer(){
     false;
 
 
-  if(animationFrame){
+  if(animationId){
 
     cancelAnimationFrame(
-      animationFrame
+      animationId
     );
 
-    animationFrame = 0;
+    animationId = 0;
 
   }
 
@@ -1844,9 +1745,9 @@ function pauseTimer(){
 }
 
 
-/* ========================================
+/* =====================================================
    TIMER LOOP
-======================================== */
+===================================================== */
 
 function timerLoop(timestamp){
 
@@ -1857,25 +1758,25 @@ function timerLoop(timestamp){
   }
 
 
-  const delta =
-    (timestamp - lastTimestamp) /
+  const difference =
+    (timestamp - lastTime) /
     1000;
 
 
-  lastTimestamp =
+  lastTime =
     timestamp;
 
 
-  const previousRemaining =
+  const previous =
     remaining;
 
 
   remaining -=
-    delta;
+    difference;
 
 
   /*
-    WAKTU HABIS
+    HABIS.
   */
 
   if(
@@ -1884,7 +1785,6 @@ function timerLoop(timestamp){
 
     remaining =
       0;
-
 
     render();
 
@@ -1895,34 +1795,27 @@ function timerLoop(timestamp){
   }
 
 
-  const previousSeconds =
+  const previousSecond =
     Math.ceil(
-      previousRemaining
+      previous
     );
 
 
-  const currentSeconds =
+  const currentSecond =
     Math.ceil(
       remaining
     );
 
 
   /*
-    ====================================
-    SUARA 5 MENIT
-    ====================================
-
-    Trigger ketika timer melewati
-    batas 05:00.
-
-    Tidak menggunakan === 300
-    sehingga tidak akan terlewat
-    akibat frame browser.
+    =====================================
+    5 MENIT
+    =====================================
   */
 
   if(
-    previousSeconds > 300 &&
-    currentSeconds <= 300 &&
+    previousSecond > 300 &&
+    currentSecond <= 300 &&
     !fiveMinuteAnnounced
   ){
 
@@ -1930,29 +1823,45 @@ function timerLoop(timestamp){
       true;
 
 
+    /*
+      SUARA MANUSIA
+    */
+
     speak(
       "Perhatian, waktu tersisa 5 menit lagi."
     );
 
 
-    beep(
-      1000,
-      .20,
-      .08
+    /*
+      Beep sesudah perintah suara
+      tidak memblokir suara.
+    */
+
+    setTimeout(
+      () => {
+
+        beep(
+          1000,
+          .15,
+          .06
+        );
+
+      },
+      700
     );
 
   }
 
 
   /*
-    ====================================
-    SUARA 1 MENIT
-    ====================================
+    =====================================
+    1 MENIT
+    =====================================
   */
 
   if(
-    previousSeconds > 60 &&
-    currentSeconds <= 60 &&
+    previousSecond > 60 &&
+    currentSecond <= 60 &&
     !oneMinuteAnnounced
   ){
 
@@ -1965,33 +1874,40 @@ function timerLoop(timestamp){
     );
 
 
-    beep(
-      1200,
-      .20,
-      .08
+    setTimeout(
+      () => {
+
+        beep(
+          1200,
+          .15,
+          .06
+        );
+
+      },
+      700
     );
 
   }
 
 
   /*
-    ====================================
+    =====================================
     30 DETIK
-    ====================================
+    =====================================
   */
 
   if(
-    currentSeconds <= 30 &&
-    currentSeconds > 10
+    currentSecond <= 30 &&
+    currentSecond > 10
   ){
 
     if(
-      currentSeconds !==
-      lastSecondBeep
+      currentSecond !==
+      lastBeepSecond
     ){
 
-      lastSecondBeep =
-        currentSeconds;
+      lastBeepSecond =
+        currentSecond;
 
 
       beep(
@@ -2006,22 +1922,22 @@ function timerLoop(timestamp){
 
 
   /*
-    ====================================
+    =====================================
     10 DETIK
-    ====================================
+    =====================================
   */
 
   if(
-    currentSeconds <= 10
+    currentSecond <= 10
   ){
 
     if(
-      currentSeconds !==
-      lastSecondBeep
+      currentSecond !==
+      lastBeepSecond
     ){
 
-      lastSecondBeep =
-        currentSeconds;
+      lastBeepSecond =
+        currentSecond;
 
 
       beep(
@@ -2038,7 +1954,7 @@ function timerLoop(timestamp){
   render();
 
 
-  animationFrame =
+  animationId =
     requestAnimationFrame(
       timerLoop
     );
@@ -2046,9 +1962,9 @@ function timerLoop(timestamp){
 }
 
 
-/* ========================================
-   FINISH TIMER
-======================================== */
+/* =====================================================
+   FINISH
+===================================================== */
 
 function finishTimer(){
 
@@ -2056,13 +1972,13 @@ function finishTimer(){
     false;
 
 
-  if(animationFrame){
+  if(animationId){
 
     cancelAnimationFrame(
-      animationFrame
+      animationId
     );
 
-    animationFrame = 0;
+    animationId = 0;
 
   }
 
@@ -2075,79 +1991,43 @@ function finishTimer(){
 
 
   /*
-    Hentikan ucapan sebelumnya.
+    Beep awal.
   */
 
-  if(
-    "speechSynthesis" in window
-  ){
-
-    try{
-
-      window.speechSynthesis.cancel();
-
-      window.speechSynthesis.resume();
-
-    }catch{}
-
-  }
+  beep(
+    1200,
+    .25,
+    .15
+  );
 
 
   /*
-    ====================================
-    SUARA MANUSIA
-    ====================================
+    Jangan cancel speech di sini.
+    Langsung panggil suara manusia.
   */
 
-  if(
-    $("sound").checked
-  ){
+  finishTimerId =
+    setTimeout(
+      () => {
 
-    /*
-      Beep perhatian
-    */
-
-    beep(
-      1200,
-      .25,
-      .15
-    );
+        speak(
+          "Waktu sudah habis."
+        );
 
 
-    /*
-      Suara manusia
-    */
+        /*
+          Alarm setelah suara manusia.
+        */
 
-    alarmTimer =
-      setTimeout(
-        () => {
-
-          speak(
-            "Waktu sudah habis."
+        finishTimerId =
+          setTimeout(
+            startFinalAlarm,
+            1500
           );
 
-
-          /*
-            Setelah ucapan dimulai,
-            lanjutkan alarm.
-          */
-
-          alarmTimer =
-            setTimeout(
-              startEndAlarm,
-              1400
-            );
-
-        },
-        450
-      );
-
-  }
-  else{
-
-    startEndAlarm();
-
-  }
+      },
+      350
+    );
 
 
   $("start").textContent =
@@ -2156,13 +2036,13 @@ function finishTimer(){
 }
 
 
-/* ========================================
-   ALARM AKHIR
-======================================== */
+/* =====================================================
+   FINAL ALARM
+===================================================== */
 
-function startEndAlarm(){
+function startFinalAlarm(){
 
-  const duration =
+  const seconds =
     Math.max(
       1,
       Math.min(
@@ -2174,48 +2054,46 @@ function startEndAlarm(){
     );
 
 
-  const endTime =
+  const end =
     Date.now() +
-    duration * 1000;
+    seconds * 1000;
 
 
-  const loop =
-    () => {
+  function alarmLoop(){
 
-      if(
-        Date.now() >=
-        endTime
-      ){
+    if(
+      Date.now() >= end
+    ){
 
-        alarmInterval = 0;
+      alarmId =
+        0;
 
-        return;
+      return;
 
-      }
+    }
 
 
-      beep(
-        1050,
-        .20,
-        .13
+    beep(
+      1050,
+      .20,
+      .13
+    );
+
+
+    alarmId =
+      setTimeout(
+        alarmLoop,
+        350
       );
 
-
-      alarmInterval =
-        setTimeout(
-          loop,
-          350
-        );
-
-    };
+  }
 
 
-  loop();
+  alarmLoop();
 
 
   /*
-    Otomatis pindah ke pertanyaan
-    berikutnya setelah alarm selesai.
+    Pindah pertanyaan.
   */
 
   if(
@@ -2224,7 +2102,7 @@ function startEndAlarm(){
     QUESTIONS.length - 1
   ){
 
-    alarmTimer =
+    finishTimerId =
       setTimeout(
         () => {
 
@@ -2233,7 +2111,7 @@ function startEndAlarm(){
           );
 
         },
-        duration * 1000 + 1500
+        seconds * 1000 + 1500
       );
 
   }
@@ -2241,13 +2119,31 @@ function startEndAlarm(){
 }
 
 
-/* ========================================
+/* =====================================================
    RESET
-======================================== */
+===================================================== */
 
 function resetTimer(){
 
-  stopTimer();
+  stopAll();
+
+
+  totalSeconds =
+    QUESTIONS[index][1] * 60;
+
+
+  remaining =
+    totalSeconds;
+
+
+  fiveMinuteAnnounced =
+    false;
+
+  oneMinuteAnnounced =
+    false;
+
+  lastBeepSecond =
+    -1;
 
 
   if(
@@ -2261,24 +2157,6 @@ function resetTimer(){
     }catch{}
 
   }
-
-
-  total =
-    QUESTIONS[index][1] * 60;
-
-
-  remaining =
-    total;
-
-
-  fiveMinuteAnnounced =
-    false;
-
-  oneMinuteAnnounced =
-    false;
-
-  lastSecondBeep =
-    -1;
 
 
   $("start").textContent =
@@ -2293,54 +2171,74 @@ function resetTimer(){
 }
 
 
-/* ========================================
+/* =====================================================
    TEST SUARA MANUSIA
-======================================== */
+===================================================== */
 
 $("testVoice").addEventListener(
   "click",
-  () => {
+  function(){
 
     unlockAudio();
 
 
+    /*
+      Tampilkan informasi voice.
+    */
+
+    const voice =
+      findIndonesianVoice();
+
+
+    if(voice){
+
+      voiceStatus.textContent =
+        "Voice: " +
+        voice.name +
+        " (" +
+        voice.lang +
+        ")";
+
+    }
+    else{
+
+      voiceStatus.textContent =
+        "Voice Indonesia tidak ditemukan. Menggunakan voice bawaan.";
+
+    }
+
+
+    /*
+      SUARA MANUSIA LANGSUNG.
+    */
+
     speak(
-      "Perhatian. Ini adalah tes suara manusia. Waktu tersisa 5 menit lagi."
+      "Perhatian. Ini adalah tes suara manusia. Waktu tersisa lima menit lagi."
     );
 
   }
 );
 
 
-/* ========================================
+/* =====================================================
    TEST 5 MENIT
-======================================== */
+===================================================== */
 
 $("test5").addEventListener(
   "click",
-  () => {
+  function(){
 
     unlockAudio();
 
-    stopTimer();
+    stopAll();
 
 
-    /*
-      Test dibuat tepat 5 menit.
-    */
-
-    total =
+    totalSeconds =
       300;
 
     remaining =
       300;
 
-
-    /*
-      Set true supaya saat test
-      tidak langsung berbunyi lagi
-      ketika timer mulai.
-    */
 
     fiveMinuteAnnounced =
       true;
@@ -2348,7 +2246,7 @@ $("test5").addEventListener(
     oneMinuteAnnounced =
       false;
 
-    lastSecondBeep =
+    lastBeepSecond =
       -1;
 
 
@@ -2359,31 +2257,24 @@ $("test5").addEventListener(
       "Perhatian, waktu tersisa 5 menit lagi."
     );
 
-
-    beep(
-      1000,
-      .20,
-      .08
-    );
-
   }
 );
 
 
-/* ========================================
+/* =====================================================
    TEST 1 MENIT
-======================================== */
+===================================================== */
 
 $("test1").addEventListener(
   "click",
-  () => {
+  function(){
 
     unlockAudio();
 
-    stopTimer();
+    stopAll();
 
 
-    total =
+    totalSeconds =
       60;
 
     remaining =
@@ -2396,7 +2287,7 @@ $("test1").addEventListener(
     oneMinuteAnnounced =
       true;
 
-    lastSecondBeep =
+    lastBeepSecond =
       -1;
 
 
@@ -2407,31 +2298,24 @@ $("test1").addEventListener(
       "Perhatian, waktu tersisa 1 menit lagi."
     );
 
-
-    beep(
-      1200,
-      .20,
-      .08
-    );
-
   }
 );
 
 
-/* ========================================
+/* =====================================================
    TEST 10 DETIK
-======================================== */
+===================================================== */
 
 $("test10").addEventListener(
   "click",
-  () => {
+  function(){
 
     unlockAudio();
 
-    stopTimer();
+    stopAll();
 
 
-    total =
+    totalSeconds =
       10;
 
     remaining =
@@ -2444,7 +2328,7 @@ $("test10").addEventListener(
     oneMinuteAnnounced =
       true;
 
-    lastSecondBeep =
+    lastBeepSecond =
       -1;
 
 
@@ -2457,17 +2341,17 @@ $("test10").addEventListener(
 );
 
 
-/* ========================================
-   TEST WAKTU HABIS
-======================================== */
+/* =====================================================
+   TEST HABIS
+===================================================== */
 
 $("testEnd").addEventListener(
   "click",
-  () => {
+  function(){
 
     unlockAudio();
 
-    stopTimer();
+    stopAll();
 
 
     remaining =
@@ -2483,38 +2367,36 @@ $("testEnd").addEventListener(
 );
 
 
-/* ========================================
-   TEST SLIDER
-======================================== */
+/* =====================================================
+   SLIDER TEST
+===================================================== */
 
-testSlider.addEventListener(
+slider.addEventListener(
   "input",
-  () => {
+  function(){
 
-    stopTimer();
+    stopAll();
 
 
     remaining =
       Number(
-        testSlider.value
+        slider.value
       );
 
 
     /*
-      Jika digeser ke atas 5 menit,
-      suara akan aktif lagi ketika
-      timer melewati 5 menit.
+      Reset trigger supaya ketika
+      slider digeser di atas 5 menit,
+      suara bisa dipicu lagi.
     */
 
     fiveMinuteAnnounced =
       remaining <= 300;
 
-
     oneMinuteAnnounced =
       remaining <= 60;
 
-
-    lastSecondBeep =
+    lastBeepSecond =
       -1;
 
 
@@ -2531,16 +2413,15 @@ testSlider.addEventListener(
 );
 
 
-/* ========================================
-   START BUTTON
-======================================== */
+/* =====================================================
+   BUTTONS
+===================================================== */
 
 $("start").addEventListener(
   "click",
-  () => {
+  function(){
 
     unlockAudio();
-
 
     if(running){
 
@@ -2557,13 +2438,9 @@ $("start").addEventListener(
 );
 
 
-/* ========================================
-   PAUSE BUTTON
-======================================== */
-
 $("pause").addEventListener(
   "click",
-  () => {
+  function(){
 
     unlockAudio();
 
@@ -2573,27 +2450,15 @@ $("pause").addEventListener(
 );
 
 
-/* ========================================
-   RESET BUTTON
-======================================== */
-
 $("reset").addEventListener(
   "click",
-  () => {
-
-    resetTimer();
-
-  }
+  resetTimer
 );
 
 
-/* ========================================
-   PREVIOUS
-======================================== */
-
 $("prev").addEventListener(
   "click",
-  () => {
+  function(){
 
     selectQuestion(
       index - 1
@@ -2603,13 +2468,9 @@ $("prev").addEventListener(
 );
 
 
-/* ========================================
-   NEXT
-======================================== */
-
 $("next").addEventListener(
   "click",
-  () => {
+  function(){
 
     selectQuestion(
       index + 1
@@ -2619,13 +2480,13 @@ $("next").addEventListener(
 );
 
 
-/* ========================================
+/* =====================================================
    FULLSCREEN
-======================================== */
+===================================================== */
 
 $("fullscreen").addEventListener(
   "click",
-  async () => {
+  async function(){
 
     try{
 
@@ -2656,13 +2517,13 @@ $("fullscreen").addEventListener(
 );
 
 
-/* ========================================
+/* =====================================================
    MINIMIZE
-======================================== */
+===================================================== */
 
 $("minimize").addEventListener(
   "click",
-  () => {
+  function(){
 
     document.body.classList.toggle(
       "compact"
@@ -2684,28 +2545,23 @@ $("minimize").addEventListener(
 );
 
 
-/* ========================================
+/* =====================================================
    KEYBOARD
-======================================== */
+===================================================== */
 
 document.addEventListener(
   "keydown",
-  event => {
+  function(event){
 
-    /*
-      Jangan menjalankan shortcut
-      saat mengetik input.
-    */
-
-    const tag =
+    const activeTag =
       document.activeElement
         ? document.activeElement.tagName
         : "";
 
 
     if(
-      tag === "INPUT" ||
-      tag === "TEXTAREA"
+      activeTag === "INPUT" ||
+      activeTag === "TEXTAREA"
     ){
 
       return;
@@ -2720,7 +2576,6 @@ document.addEventListener(
       event.preventDefault();
 
       unlockAudio();
-
 
       if(running){
 
@@ -2788,9 +2643,9 @@ document.addEventListener(
 );
 
 
-/* ========================================
-   JAM DIGITAL
-======================================== */
+/* =====================================================
+   CLOCK
+===================================================== */
 
 function updateClock(){
 
@@ -2798,7 +2653,7 @@ function updateClock(){
     new Date();
 
 
-  const formatter =
+  $("clock").textContent =
     new Intl.DateTimeFormat(
       "id-ID",
       {
@@ -2806,11 +2661,7 @@ function updateClock(){
         minute:"2-digit",
         second:"2-digit"
       }
-    );
-
-
-  $("clock").textContent =
-    formatter.format(now);
+    ).format(now);
 
 }
 
@@ -2823,11 +2674,11 @@ setInterval(
 );
 
 
-/* ========================================
+/* =====================================================
    INITIALIZE
-======================================== */
+===================================================== */
 
-renderList();
+renderQuestionList();
 
 render();
 
