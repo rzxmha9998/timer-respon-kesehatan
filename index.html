@@ -1,16 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07111f">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Timer Respon Kesehatan</title>
 
 <style>
 :root{
   --bg:#07111f;
   --card:#0d1b2d;
-  --card2:#13263d;
+  --card2:#11243a;
   --text:#f5f7fb;
   --muted:#9fb0c5;
   --accent:#35d0ba;
@@ -22,55 +21,35 @@
   box-sizing:border-box;
 }
 
-html,body{
-  margin:0;
-  width:100%;
-  min-height:100%;
-}
-
 body{
+  margin:0;
   min-height:100vh;
-  padding:20px;
-  font-family:Arial,Helvetica,sans-serif;
-  background:
-    radial-gradient(
-      circle at 50% -10%,
-      #183b5b 0,
-      #07111f 52%
-    );
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:radial-gradient(circle at 50% -10%,#183b5b 0,#07111f 48%);
   color:var(--text);
   display:flex;
-  justify-content:center;
   align-items:center;
-}
-
-button,
-input{
-  font-family:inherit;
-}
-
-button{
-  border:0;
-  cursor:pointer;
+  justify-content:center;
+  padding:24px;
 }
 
 .app{
-  width:min(1250px,100%);
+  width:min(1200px,100%);
   display:grid;
-  grid-template-columns:minmax(0,1.55fr) minmax(290px,.8fr);
+  grid-template-columns:1.5fr .8fr;
   gap:18px;
 }
 
 .card{
-  background:rgba(13,27,45,.98);
+  background:rgba(13,27,45,.96);
   border:1px solid rgba(255,255,255,.08);
   border-radius:24px;
-  box-shadow:0 20px 70px rgba(0,0,0,.35);
+  box-shadow:0 20px 70px rgba(0,0,0,.3);
   overflow:hidden;
 }
 
 .main{
-  padding:32px;
+  padding:34px;
 }
 
 .side{
@@ -81,76 +60,70 @@ button{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:15px;
 }
 
 .badge{
-  color:var(--accent);
   font-size:13px;
-  font-weight:900;
+  color:var(--accent);
+  font-weight:800;
   letter-spacing:.08em;
   text-transform:uppercase;
 }
 
 h1{
-  margin:14px 0 10px;
   font-size:clamp(24px,4vw,42px);
-  line-height:1.1;
+  line-height:1.12;
+  margin:14px 0 10px;
 }
 
 .question{
   min-height:90px;
-  margin:0;
   color:#dce7f3;
-  font-size:clamp(18px,2.2vw,26px);
+  font-size:clamp(18px,2.2vw,25px);
   line-height:1.45;
+  margin:0;
 }
 
 .timer{
-  margin:25px 0 14px;
+  font-variant-numeric:tabular-nums;
   text-align:center;
-  font-size:clamp(85px,14vw,155px);
-  line-height:1;
+  font-size:clamp(86px,14vw,150px);
   font-weight:900;
   letter-spacing:-.06em;
-  font-variant-numeric:tabular-nums;
+  line-height:1;
+  margin:28px 0 12px;
+  transition:color .2s ease;
 }
 
 .timer.warning{
   color:var(--warning);
-  animation:warningPulse 1s infinite alternate;
 }
 
 .timer.danger{
   color:var(--danger);
-  animation:dangerPulse .6s infinite alternate;
+  animation:pulse .55s infinite alternate;
 }
 
 .timer.last10{
   color:var(--danger);
-  animation:lastTen .45s infinite alternate;
+  animation:lastTen .5s infinite alternate;
 }
 
 .timer.expired{
   color:var(--danger);
-  animation:expired .25s infinite alternate;
+  animation:expiredFlash .28s infinite alternate;
 }
 
-@keyframes warningPulse{
-  from{
-    text-shadow:0 0 0 transparent;
-  }
-  to{
-    text-shadow:0 0 30px rgba(255,189,74,.55);
-  }
-}
-
-@keyframes dangerPulse{
+@keyframes pulse{
   from{
     transform:scale(1);
+    text-shadow:0 0 0 rgba(255,77,95,0);
   }
+
   to{
     transform:scale(1.025);
-    text-shadow:0 0 35px rgba(255,77,95,.6);
+    text-shadow:0 0 35px rgba(255,77,95,.4);
   }
 }
 
@@ -159,125 +132,218 @@ h1{
     transform:scale(1);
     opacity:1;
   }
+
   to{
-    transform:scale(1.08);
+    transform:scale(1.06);
     opacity:.45;
-    text-shadow:0 0 55px rgba(255,77,95,1);
+    text-shadow:0 0 45px rgba(255,77,95,.8);
   }
 }
 
-@keyframes expired{
+@keyframes expiredFlash{
   from{
     transform:scale(1);
     opacity:1;
   }
+
   to{
-    transform:scale(1.08);
+    transform:scale(1.06);
     opacity:.3;
+    text-shadow:0 0 60px rgba(255,77,95,1);
   }
 }
 
 .progress{
-  width:100%;
   height:10px;
-  overflow:hidden;
-  border-radius:50px;
   background:#1a2b40;
+  border-radius:99px;
+  overflow:hidden;
 }
 
-.progress-bar{
-  width:100%;
+.progress>div{
   height:100%;
+  width:100%;
   background:var(--accent);
-  transition:width .15s linear;
+  transition:width .2s linear;
 }
 
-.progress.warning .progress-bar{
+.progress.warning>div{
   background:var(--warning);
 }
 
-.progress.danger .progress-bar{
+.progress.danger>div{
   background:var(--danger);
 }
 
 .meta{
   display:flex;
   justify-content:space-between;
-  margin-top:9px;
   color:var(--muted);
-  font-size:13px;
-}
-
-.finished{
-  min-height:28px;
-  margin-top:10px;
-  color:var(--danger);
-  text-align:center;
-  font-size:19px;
-  font-weight:900;
+  font-size:14px;
+  margin-top:9px;
 }
 
 .controls{
   display:grid;
   grid-template-columns:1.5fr 1fr 1fr;
-  gap:9px;
-  margin-top:24px;
-}
-
-.controls.secondary{
-  grid-template-columns:repeat(4,1fr);
-  margin-top:9px;
+  gap:10px;
+  margin-top:26px;
 }
 
 button{
-  padding:14px;
-  border-radius:13px;
+  border:0;
+  border-radius:14px;
+  padding:15px 16px;
   background:var(--card2);
-  color:white;
-  font-size:14px;
+  color:var(--text);
+  font-size:15px;
   font-weight:800;
+  cursor:pointer;
+  transition:.15s;
 }
 
 button:hover{
   filter:brightness(1.15);
+  transform:translateY(-1px);
+}
+
+button:active{
+  transform:translateY(0);
 }
 
 button.primary{
   background:var(--accent);
-  color:#05221d;
+  color:#06201c;
 }
 
-button.danger{
-  background:#4b1c28;
+.shortcut{
+  margin-top:14px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
 }
 
-.test-panel{
-  margin-top:20px;
-  padding:17px;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:16px;
+.finished{
+  text-align:center;
+  font-size:18px;
+  font-weight:900;
+  color:var(--danger);
+  min-height:28px;
+  margin-top:8px;
+  animation:expiredFlash .5s infinite alternate;
+}
+
+.list-title{
+  font-weight:900;
+  font-size:18px;
+  margin-bottom:12px;
+}
+
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  max-height:620px;
+  overflow:auto;
+  padding-right:4px;
+}
+
+.item{
+  display:grid;
+  grid-template-columns:38px 1fr 52px;
+  gap:8px;
+  align-items:center;
+  padding:11px;
+  border-radius:12px;
+  cursor:pointer;
+  border:1px solid transparent;
   background:rgba(255,255,255,.035);
 }
 
-.test-title{
-  margin-bottom:12px;
+.item:hover{
+  background:rgba(255,255,255,.07);
+}
+
+.item.active{
+  border-color:var(--accent);
+  background:rgba(53,208,186,.08);
+}
+
+.num{
+  font-weight:900;
   color:var(--accent);
+}
+
+.q{
+  font-size:13px;
+  line-height:1.3;
+}
+
+.dur{
+  font-size:12px;
+  text-align:right;
+  color:var(--muted);
+  font-weight:800;
+}
+
+.settings{
+  margin-top:16px;
+  padding-top:16px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+
+label{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:var(--muted);
+  font-size:13px;
+  margin:9px 0;
+}
+
+input[type=number]{
+  width:80px;
+  background:#091625;
+  border:1px solid #263a52;
+  color:white;
+  border-radius:8px;
+  padding:8px;
+}
+
+
+/* ========================================
+   TEST TIMER
+======================================== */
+
+.test-panel{
+  margin-top:20px;
+  padding:18px;
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+  border:1px solid rgba(255,255,255,.07);
+}
+
+.test-title{
   font-size:13px;
   font-weight:900;
+  color:var(--accent);
   letter-spacing:.06em;
+  margin-bottom:12px;
 }
 
 #testSlider{
   width:100%;
   accent-color:var(--accent);
+  cursor:pointer;
 }
 
 .test-time{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin:7px 0 12px;
   color:var(--muted);
+  font-size:13px;
+  margin:7px 0 12px;
 }
 
 .test-time strong{
@@ -288,116 +354,28 @@ button.danger{
 
 .test-buttons{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:8px;
 }
 
 .test-buttons button{
-  padding:11px 7px;
+  padding:11px 8px;
   font-size:12px;
 }
 
-.voice-status{
-  min-height:18px;
-  margin-top:10px;
-  text-align:center;
-  color:var(--muted);
-  font-size:11px;
-}
-
-.list-title{
-  margin-bottom:12px;
-  font-size:18px;
-  font-weight:900;
-}
-
-.list{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  max-height:620px;
-  overflow:auto;
-}
-
-.item{
-  display:grid;
-  grid-template-columns:36px 1fr 48px;
-  gap:8px;
-  align-items:center;
-  padding:11px;
-  border:1px solid transparent;
-  border-radius:12px;
-  background:rgba(255,255,255,.035);
-  cursor:pointer;
-}
-
-.item.active{
-  border-color:var(--accent);
-  background:rgba(53,208,186,.08);
-}
-
-.num{
-  color:var(--accent);
-  font-weight:900;
-}
-
-.q{
-  font-size:13px;
-  line-height:1.35;
-}
-
-.dur{
-  color:var(--muted);
-  text-align:right;
-  font-size:12px;
-}
-
-.settings{
-  margin-top:16px;
-  padding-top:15px;
-  border-top:1px solid rgba(255,255,255,.08);
-}
-
-label{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin:12px 0;
-  color:var(--muted);
-  font-size:13px;
-}
-
-input[type="number"]{
-  width:70px;
-  padding:7px;
-  border:1px solid #263a52;
-  border-radius:8px;
-  background:#091625;
-  color:white;
-}
-
-input[type="checkbox"]{
-  width:18px;
-  height:18px;
-  accent-color:var(--accent);
-}
-
-.shortcut{
-  margin-top:13px;
-  color:var(--muted);
-  text-align:center;
-  font-size:11px;
+.test-danger{
+  background:#4a1d27;
+  color:#fff;
 }
 
 
-/* ==============================
-   MODE MINIMIZE
-============================== */
+/* ========================================
+   MINIMIZE DAFTAR
+======================================== */
 
 body.compact .app{
-  width:min(1500px,100%);
   grid-template-columns:1fr;
+  max-width:1500px;
 }
 
 body.compact .side{
@@ -405,35 +383,26 @@ body.compact .side{
 }
 
 body.compact .main{
-  min-height:calc(100vh - 40px);
+  min-height:calc(100vh - 48px);
   display:flex;
   flex-direction:column;
   justify-content:center;
-  position:relative;
-  padding:70px clamp(25px,6vw,90px);
-}
-
-body.compact .top{
-  position:absolute;
-  top:25px;
-  left:clamp(25px,6vw,90px);
-  right:clamp(25px,6vw,90px);
+  padding:clamp(30px,6vw,90px);
 }
 
 body.compact .question{
-  max-width:1150px;
-  font-size:clamp(25px,3vw,43px);
+  max-width:1100px;
+  font-size:clamp(24px,3vw,42px);
 }
 
 body.compact .timer{
-  font-size:clamp(120px,22vw,270px);
-  margin:35px 0 20px;
+  font-size:clamp(120px,22vw,260px);
+  margin:clamp(30px,5vh,70px) 0;
 }
 
-body.compact .controls,
-body.compact .test-panel{
+body.compact .controls{
+  max-width:1000px;
   width:100%;
-  max-width:1050px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -442,58 +411,65 @@ body.compact .shortcut{
   display:none;
 }
 
+body.compact .top{
+  position:absolute;
+  left:clamp(30px,5vw,80px);
+  right:clamp(30px,5vw,80px);
+  top:28px;
+}
 
-/* ==============================
+body.compact .main{
+  position:relative;
+}
+
+
+/* ========================================
    MOBILE
-============================== */
+======================================== */
 
 @media(max-width:800px){
 
   body{
-    padding:10px;
+    padding:12px;
   }
 
   .app{
     grid-template-columns:1fr;
   }
 
-  .main{
-    padding:22px;
-  }
-
   .side{
     order:2;
   }
 
-  .timer{
-    font-size:85px;
+  .main{
+    padding:24px;
   }
 
-  .controls,
-  .controls.secondary{
-    grid-template-columns:1fr 1fr;
+  .list{
+    max-height:320px;
+  }
+
+  .timer{
+    font-size:90px;
   }
 
   .test-buttons{
     grid-template-columns:1fr 1fr;
   }
 
-  .list{
-    max-height:330px;
-  }
-
   body.compact .main{
     min-height:100vh;
-    padding:35px 20px;
+    padding:28px;
+  }
+
+  body.compact .timer{
+    font-size:clamp(90px,25vw,170px);
   }
 
   body.compact .top{
     position:static;
   }
 
-  body.compact .timer{
-    font-size:clamp(90px,25vw,170px);
-  }
 }
 </style>
 </head>
@@ -503,14 +479,17 @@ body.compact .shortcut{
 
 <div class="app">
 
+
 <section class="card main">
 
   <div class="top">
+
     <div class="badge">
       TIMER RESPON KESEHATAN
     </div>
 
     <div id="clock" class="badge"></div>
+
   </div>
 
 
@@ -528,18 +507,29 @@ body.compact .shortcut{
 
 
   <div id="progress" class="progress">
-    <div id="bar" class="progress-bar"></div>
+    <div id="bar"></div>
   </div>
 
 
   <div class="meta">
-    <span id="elapsed">00:00</span>
-    <span id="durationLabel">10 menit</span>
+
+    <span id="elapsed">
+      0:00
+    </span>
+
+    <span id="durationLabel">
+      10 menit
+    </span>
+
   </div>
 
 
   <div id="finished" class="finished"></div>
 
+
+  <!-- ===================================
+       KONTROL UTAMA
+  ==================================== -->
 
   <div class="controls">
 
@@ -558,7 +548,10 @@ body.compact .shortcut{
   </div>
 
 
-  <div class="controls secondary">
+  <div
+    class="controls"
+    style="grid-template-columns:1fr 1fr 1fr 1fr;margin-top:10px"
+  >
 
     <button id="pause">
       Ⅱ Jeda
@@ -579,12 +572,14 @@ body.compact .shortcut{
   </div>
 
 
-  <!-- TEST -->
+  <!-- ===================================
+       TEST TIMER & SUARA
+  ==================================== -->
 
   <div class="test-panel">
 
     <div class="test-title">
-      🧪 TEST TIMER & SUARA MANUSIA
+      🧪 TEST TIMER & SUARA
     </div>
 
 
@@ -599,57 +594,51 @@ body.compact .shortcut{
 
 
     <div class="test-time">
-      <span>Waktu test:</span>
+
+      <span>
+        Geser waktu:
+      </span>
+
       <strong id="testSliderValue">
         10:00
       </strong>
+
     </div>
 
 
     <div class="test-buttons">
 
-      <button
-        id="testVoice"
-        class="primary"
-      >
-        🗣️ TEST SUARA
-      </button>
-
       <button id="test5">
-        🔊 TEST 5 MENIT
+        🔊 5 Menit
       </button>
 
       <button id="test1">
-        🔊 TEST 1 MENIT
+        🔊 1 Menit
       </button>
 
       <button id="test10">
-        🔊 TEST 10 DETIK
+        🔊 10 Detik
       </button>
 
-      <button
-        id="testEnd"
-        class="danger"
-      >
-        🔊 TEST HABIS
+      <button id="testEnd" class="test-danger">
+        🔊 Waktu Habis
       </button>
 
-    </div>
-
-
-    <div id="voiceStatus" class="voice-status">
-      Tekan TEST SUARA terlebih dahulu.
     </div>
 
   </div>
 
 
   <div class="shortcut">
-    Spasi = mulai/jeda · ←/→ = pertanyaan · R = ulangi · F = fullscreen · M = minimize
+    Spasi = mulai/jeda · ←/→ = pindah · R = ulangi · F = fullscreen · M = minimize
   </div>
 
 </section>
 
+
+<!-- =====================================
+     SIDEBAR
+===================================== -->
 
 <aside class="card side">
 
@@ -657,33 +646,42 @@ body.compact .shortcut{
     Daftar Pertanyaan
   </div>
 
+
   <div id="list" class="list"></div>
 
 
   <div class="settings">
 
     <label>
+
       Suara
+
       <input
         id="sound"
         type="checkbox"
         checked
       >
+
     </label>
 
 
     <label>
-      Otomatis lanjut
+
+      Otomatis lanjut setelah waktu habis
+
       <input
         id="autoNext"
         type="checkbox"
         checked
       >
+
     </label>
 
 
     <label>
+
       Durasi alarm akhir
+
       <input
         id="alarmSec"
         type="number"
@@ -691,6 +689,7 @@ body.compact .shortcut{
         max="15"
         value="5"
       >
+
     </label>
 
   </div>
@@ -702,9 +701,10 @@ body.compact .shortcut{
 
 <script>
 
-/* =====================================================
-   DATA
-===================================================== */
+
+/* ========================================
+   DAFTAR PERTANYAAN
+======================================== */
 
 const QUESTIONS = [
 
@@ -771,279 +771,115 @@ const QUESTIONS = [
 ];
 
 
-/* =====================================================
+/* ========================================
    STATE
-===================================================== */
+======================================== */
 
 let index = 0;
 
-let totalSeconds =
+let total =
   QUESTIONS[0][1] * 60;
 
-let remaining =
-  totalSeconds;
+let remaining = total;
 
 let running = false;
 
-let lastTime = 0;
+let last = 0;
 
-let animationId = 0;
+let raf = 0;
 
-let finishTimerId = 0;
+let alarmTimer = 0;
 
-let alarmId = 0;
-
-let audioContext = null;
+let audioCtx = null;
 
 
 /*
-  PENTING:
-  Utterance disimpan dalam variable global.
-  Ini menghindari beberapa browser membuang
-  object speech sebelum selesai.
+  PENANDA PERINGATAN
 */
-
-let currentSpeech = null;
-
-let availableVoices = [];
 
 let fiveMinuteAnnounced = false;
 
 let oneMinuteAnnounced = false;
 
-let lastBeepSecond = -1;
+let lastSecondBeep = -1;
 
 
-/* =====================================================
+/* ========================================
    ELEMENT
-===================================================== */
+======================================== */
 
 const $ =
   id => document.getElementById(id);
 
-const timerElement =
+
+const timerEl =
   $("timer");
 
-const questionElement =
-  $("question");
-
-const titleElement =
-  $("title");
-
-const elapsedElement =
-  $("elapsed");
-
-const durationElement =
-  $("durationLabel");
-
-const finishedElement =
-  $("finished");
-
-const progressElement =
+const bar =
   $("bar");
 
-const listElement =
+const titleEl =
+  $("title");
+
+const qEl =
+  $("question");
+
+const durationLabel =
+  $("durationLabel");
+
+const elapsedEl =
+  $("elapsed");
+
+const listEl =
   $("list");
 
-const slider =
+const finishedEl =
+  $("finished");
+
+const testSlider =
   $("testSlider");
 
-const sliderValue =
+const testSliderValue =
   $("testSliderValue");
 
-const voiceStatus =
-  $("voiceStatus");
 
+/* ========================================
+   FORMAT WAKTU
+======================================== */
 
-/* =====================================================
-   FORMAT
-===================================================== */
+function fmt(sec){
 
-function formatTime(value){
-
-  const seconds =
+  sec =
     Math.max(
       0,
-      Math.ceil(value)
+      Math.ceil(sec)
     );
 
-  const minutes =
-    Math.floor(
-      seconds / 60
-    );
-
-  const secs =
-    seconds % 60;
 
   return (
-    String(minutes).padStart(2,"0")
+
+    String(
+      Math.floor(sec / 60)
+    ).padStart(2,"0")
+
     +
+
     ":"
+
     +
-    String(secs).padStart(2,"0")
-  );
-}
 
+    String(
+      sec % 60
+    ).padStart(2,"0")
 
-/* =====================================================
-   VOICE ENGINE
-===================================================== */
-
-function refreshVoices(){
-
-  if(
-    !("speechSynthesis" in window)
-  ){
-
-    availableVoices = [];
-
-    return;
-
-  }
-
-  availableVoices =
-    window.speechSynthesis.getVoices();
-
-}
-
-
-if(
-  "speechSynthesis" in window
-){
-
-  refreshVoices();
-
-  window.speechSynthesis.addEventListener(
-    "voiceschanged",
-    refreshVoices
   );
 
 }
 
 
-/*
-  Cari voice Indonesia.
-*/
-
-function findIndonesianVoice(){
-
-  refreshVoices();
-
-
-  let voice =
-    availableVoices.find(
-      item =>
-        String(item.lang)
-          .toLowerCase()
-          .replace("_","-")
-          === "id-id"
-    );
-
-
-  if(!voice){
-
-    voice =
-      availableVoices.find(
-        item =>
-          String(item.lang)
-            .toLowerCase()
-            .replace("_","-")
-            .startsWith("id")
-      );
-
-  }
-
-
-  if(!voice){
-
-    voice =
-      availableVoices.find(
-        item =>
-          /indonesia|indonesian/i
-            .test(
-              String(item.name)
-            )
-      );
-
-  }
-
-
-  return voice || null;
-}
-
-
-/* =====================================================
-   UNLOCK AUDIO
-===================================================== */
-
-function unlockAudio(){
-
-  /*
-    Web Audio untuk beep.
-  */
-
-  try{
-
-    const AudioContext =
-      window.AudioContext ||
-      window.webkitAudioContext;
-
-    if(
-      AudioContext &&
-      !audioContext
-    ){
-
-      audioContext =
-        new AudioContext();
-
-    }
-
-
-    if(
-      audioContext &&
-      audioContext.state ===
-      "suspended"
-    ){
-
-      audioContext.resume();
-
-    }
-
-  }catch(error){
-
-    console.warn(error);
-
-  }
-
-
-  /*
-    Speech engine.
-  */
-
-  try{
-
-    if(
-      "speechSynthesis" in window
-    ){
-
-      window.speechSynthesis.resume();
-
-      refreshVoices();
-
-    }
-
-  }catch(error){
-
-    console.warn(error);
-
-  }
-
-}
-
-
-/* =====================================================
-   SUARA MANUSIA
-===================================================== */
+/* ========================================
+   TEXT TO SPEECH
+======================================== */
 
 function speak(text){
 
@@ -1060,143 +896,52 @@ function speak(text){
     !("speechSynthesis" in window)
   ){
 
-    voiceStatus.textContent =
-      "Browser tidak mendukung suara manusia.";
-
     return;
 
   }
 
 
-  unlockAudio();
-
-
-  const synth =
-    window.speechSynthesis;
-
-
-  /*
-    Jangan cancel sebelum membuat
-    utterance baru.
-  */
-
   try{
 
-    if(synth.paused){
-
-      synth.resume();
-
-    }
-
-  }catch{}
+    window.speechSynthesis.cancel();
 
 
-  const voice =
-    findIndonesianVoice();
-
-
-  /*
-    Buat utterance baru dan simpan
-    secara global.
-  */
-
-  const utterance =
-    new SpeechSynthesisUtterance(
-      text
-    );
-
-
-  currentSpeech =
-    utterance;
-
-
-  utterance.lang =
-    voice
-      ? voice.lang
-      : "id-ID";
-
-
-  if(voice){
-
-    utterance.voice =
-      voice;
-
-  }
-
-
-  utterance.rate =
-    0.78;
-
-  utterance.pitch =
-    1;
-
-  utterance.volume =
-    1;
-
-
-  utterance.onstart =
-    function(){
-
-      voiceStatus.textContent =
-        "🔊 SUARA MANUSIA AKTIF";
-
-    };
-
-
-  utterance.onend =
-    function(){
-
-      voiceStatus.textContent =
-        "✓ Suara selesai.";
-
-      currentSpeech =
-        null;
-
-    };
-
-
-  utterance.onerror =
-    function(event){
-
-      console.error(
-        "Speech error:",
-        event
+    const speech =
+      new SpeechSynthesisUtterance(
+        text
       );
 
-      voiceStatus.textContent =
-        "⚠️ Browser gagal memainkan suara manusia.";
 
-      currentSpeech =
-        null;
-
-    };
+    speech.lang =
+      "id-ID";
 
 
-  /*
-    Bicara langsung.
-    Tidak menggunakan setTimeout.
-  */
+    speech.rate =
+      .92;
 
-  try{
 
-    synth.speak(
-      utterance
-    );
+    speech.pitch =
+      1;
 
-  }catch(error){
 
-    console.error(
-      error
+    speech.volume =
+      1;
+
+
+    window.speechSynthesis.speak(
+      speech
     );
 
   }
+
+  catch{}
 
 }
 
 
-/* =====================================================
+/* ========================================
    BEEP
-===================================================== */
+======================================== */
 
 function beep(
   frequency = 880,
@@ -1215,40 +960,46 @@ function beep(
 
   try{
 
-    unlockAudio();
+    audioCtx ||= new (
+      window.AudioContext ||
+      window.webkitAudioContext
+    )();
 
 
-    if(!audioContext){
+    if(
+      audioCtx.state ===
+      "suspended"
+    ){
 
-      return;
+      audioCtx.resume();
 
     }
 
 
     const oscillator =
-      audioContext.createOscillator();
+      audioCtx.createOscillator();
+
 
     const gain =
-      audioContext.createGain();
+      audioCtx.createGain();
 
 
     oscillator.type =
       "sine";
 
+
     oscillator.frequency.value =
       frequency;
 
 
-    gain.gain.setValueAtTime(
-      volume,
-      audioContext.currentTime
-    );
+    gain.gain.value =
+      volume;
 
 
     oscillator.connect(gain);
 
     gain.connect(
-      audioContext.destination
+      audioCtx.destination
     );
 
 
@@ -1256,76 +1007,27 @@ function beep(
 
 
     gain.gain.exponentialRampToValueAtTime(
-      0.001,
-      audioContext.currentTime +
+      .001,
+      audioCtx.currentTime +
       duration
     );
 
 
     oscillator.stop(
-      audioContext.currentTime +
+      audioCtx.currentTime +
       duration
     );
 
-  }catch(error){
-
-    console.warn(
-      "Beep error:",
-      error
-    );
-
   }
+
+  catch{}
 
 }
 
 
-/* =====================================================
-   STOP EVERYTHING
-===================================================== */
-
-function stopAll(){
-
-  running = false;
-
-
-  if(animationId){
-
-    cancelAnimationFrame(
-      animationId
-    );
-
-    animationId = 0;
-
-  }
-
-
-  if(finishTimerId){
-
-    clearTimeout(
-      finishTimerId
-    );
-
-    finishTimerId = 0;
-
-  }
-
-
-  if(alarmId){
-
-    clearTimeout(
-      alarmId
-    );
-
-    alarmId = 0;
-
-  }
-
-}
-
-
-/* =====================================================
+/* ========================================
    RENDER
-===================================================== */
+======================================== */
 
 function render(){
 
@@ -1336,279 +1038,265 @@ function render(){
     QUESTIONS[index];
 
 
-  titleElement.textContent =
+  total =
+    minutes * 60;
+
+
+  titleEl.textContent =
     `Pertanyaan ${index + 1} dari ${QUESTIONS.length}`;
 
 
-  questionElement.textContent =
+  qEl.textContent =
     question;
 
 
-  durationElement.textContent =
+  durationLabel.textContent =
     `${minutes} menit`;
 
 
-  timerElement.textContent =
-    formatTime(
-      remaining
-    );
+  timerEl.textContent =
+    fmt(remaining);
 
 
   /*
-    Warna.
+    WARNA TIMER
   */
 
   if(
     remaining <= 0
   ){
 
-    timerElement.className =
+    timerEl.className =
       "timer expired";
 
   }
+
   else if(
     remaining <= 10
   ){
 
-    timerElement.className =
+    timerEl.className =
       "timer last10";
 
   }
+
   else if(
     remaining <= 60
   ){
 
-    timerElement.className =
+    timerEl.className =
       "timer danger";
 
   }
+
   else if(
     remaining <= 300
   ){
 
-    timerElement.className =
+    timerEl.className =
       "timer warning";
 
   }
+
   else{
 
-    timerElement.className =
+    timerEl.className =
       "timer";
 
   }
 
 
   /*
-    Progress.
+    PROGRESS BAR
   */
 
-  const percentage =
-    totalSeconds > 0
-      ? Math.max(
-          0,
-          Math.min(
-            100,
-            remaining /
-            totalSeconds *
-            100
-          )
-        )
-      : 0;
-
-
-  progressElement.style.width =
-    percentage + "%";
-
-
-  /*
-    Progress color.
-  */
-
-  const progress =
-    progressElement.parentElement;
+  bar.style.width =
+    `${Math.max(
+      0,
+      remaining /
+      total *
+      100
+    )}%`;
 
 
   if(
     remaining <= 60
   ){
 
-    progress.className =
+    $("progress").className =
       "progress danger";
 
   }
+
   else if(
     remaining <= 300
   ){
 
-    progress.className =
+    $("progress").className =
       "progress warning";
 
   }
+
   else{
 
-    progress.className =
+    $("progress").className =
       "progress";
 
   }
 
 
-  elapsedElement.textContent =
-    formatTime(
-      totalSeconds -
-      remaining
+  elapsedEl.textContent =
+    fmt(
+      total - remaining
     );
 
 
-  finishedElement.textContent =
+  finishedEl.textContent =
     remaining <= 0
-      ? "⏰ WAKTU SUDAH HABIS"
+      ? "⏰ WAKTU HABIS"
       : "";
 
 
-  Array.from(
-    listElement.children
-  ).forEach(
-    (item,position) => {
+  /*
+    Update daftar
+  */
 
-      item.classList.toggle(
+  [
+    ...listEl.children
+  ].forEach(
+    (element,i) => {
+
+      element.classList.toggle(
         "active",
-        position === index
+        i === index
       );
 
     }
   );
 
 
-  slider.max =
-    Math.max(
-      totalSeconds,
-      1
-    );
+  /*
+    Update slider TEST
+  */
+
+  if(testSlider){
+
+    testSlider.value =
+      Math.max(
+        0,
+        Math.min(
+          total,
+          remaining
+        )
+      );
 
 
-  slider.value =
-    Math.max(
-      0,
-      Math.min(
-        totalSeconds,
-        remaining
-      )
-    );
+    testSliderValue.textContent =
+      fmt(remaining);
 
-
-  sliderValue.textContent =
-    formatTime(
-      remaining
-    );
+  }
 
 }
 
 
-/* =====================================================
-   QUESTION LIST
-===================================================== */
+/* ========================================
+   RENDER LIST
+======================================== */
 
-function renderQuestionList(){
+function renderList(){
 
-  listElement.innerHTML = "";
+  listEl.innerHTML =
+    QUESTIONS.map(
+      (
+        [question,minutes],
+        i
+      ) => `
+
+      <div
+        class="item ${
+          i === index
+            ? "active"
+            : ""
+        }"
+        data-i="${i}"
+      >
+
+        <div class="num">
+          ${i + 1}
+        </div>
+
+        <div class="q">
+          ${question}
+        </div>
+
+        <div class="dur">
+          ${minutes} m
+        </div>
+
+      </div>
+
+    `
+    ).join("");
 
 
-  QUESTIONS.forEach(
-    ([question,minutes],position) => {
+  listEl
+    .querySelectorAll(".item")
+    .forEach(
+      element => {
 
-      const item =
-        document.createElement(
-          "div"
-        );
+        element.onclick =
+          () => {
 
+            select(
+              Number(
+                element.dataset.i
+              )
+            );
 
-      item.className =
-        "item";
-
-
-      if(
-        position === index
-      ){
-
-        item.classList.add(
-          "active"
-        );
+          };
 
       }
+    );
+
+}
 
 
-      const number =
-        document.createElement(
-          "div"
-        );
+/* ========================================
+   STOP
+======================================== */
 
-      number.className =
-        "num";
+function stop(){
 
-      number.textContent =
-        position + 1;
+  running = false;
 
+  cancelAnimationFrame(
+    raf
+  );
 
-      const text =
-        document.createElement(
-          "div"
-        );
-
-      text.className =
-        "q";
-
-      text.textContent =
-        question;
-
-
-      const duration =
-        document.createElement(
-          "div"
-        );
-
-      duration.className =
-        "dur";
-
-      duration.textContent =
-        minutes + " m";
-
-
-      item.append(
-        number,
-        text,
-        duration
-      );
-
-
-      item.addEventListener(
-        "click",
-        () => {
-
-          selectQuestion(
-            position
-          );
-
-        }
-      );
-
-
-      listElement.appendChild(
-        item
-      );
-
-    }
+  clearTimeout(
+    alarmTimer
   );
 
 }
 
 
-/* =====================================================
+/* ========================================
    SELECT QUESTION
-===================================================== */
+======================================== */
 
-function selectQuestion(position){
+function select(i){
 
-  stopAll();
+  stop();
+
+
+  if(
+    "speechSynthesis"
+    in window
+  ){
+
+    window.speechSynthesis.cancel();
+
+  }
 
 
   index =
@@ -1616,17 +1304,18 @@ function selectQuestion(position){
       0,
       Math.min(
         QUESTIONS.length - 1,
-        position
+        i
       )
     );
 
 
-  totalSeconds =
-    QUESTIONS[index][1] * 60;
+  total =
+    QUESTIONS[index][1] *
+    60;
 
 
   remaining =
-    totalSeconds;
+    total;
 
 
   fiveMinuteAnnounced =
@@ -1635,7 +1324,7 @@ function selectQuestion(position){
   oneMinuteAnnounced =
     false;
 
-  lastBeepSecond =
+  lastSecondBeep =
     -1;
 
 
@@ -1648,26 +1337,51 @@ function selectQuestion(position){
 
   render();
 
-  renderQuestionList();
+  renderList();
 
 }
 
 
-/* =====================================================
+/* ========================================
    START
-===================================================== */
+======================================== */
 
-function startTimer(){
-
-  unlockAudio();
-
+function start(){
 
   if(
     remaining <= 0
   ){
 
     remaining =
-      totalSeconds;
+      total;
+
+  }
+
+
+  /*
+    Browser mengizinkan audio
+    setelah interaksi pengguna.
+  */
+
+  if(
+    !audioCtx &&
+    $("sound").checked
+  ){
+
+    try{
+
+      audioCtx =
+        new (
+          window.AudioContext ||
+          window.webkitAudioContext
+        )();
+
+
+      audioCtx.resume();
+
+    }
+
+    catch{}
 
   }
 
@@ -1676,12 +1390,13 @@ function startTimer(){
     true;
 
 
-  lastTime =
+  last =
     performance.now();
 
 
   $("start").textContent =
     "↻ Berjalan";
+
 
   $("pause").textContent =
     "Ⅱ Jeda";
@@ -1694,23 +1409,23 @@ function startTimer(){
   );
 
 
-  animationId =
+  raf =
     requestAnimationFrame(
-      timerLoop
+      tick
     );
 
 }
 
 
-/* =====================================================
+/* ========================================
    PAUSE
-===================================================== */
+======================================== */
 
-function pauseTimer(){
+function pause(){
 
   if(!running){
 
-    startTimer();
+    start();
 
     return;
 
@@ -1721,15 +1436,9 @@ function pauseTimer(){
     false;
 
 
-  if(animationId){
-
-    cancelAnimationFrame(
-      animationId
-    );
-
-    animationId = 0;
-
-  }
+  cancelAnimationFrame(
+    raf
+  );
 
 
   $("pause").textContent =
@@ -1745,38 +1454,32 @@ function pauseTimer(){
 }
 
 
-/* =====================================================
+/* ========================================
    TIMER LOOP
-===================================================== */
+======================================== */
 
-function timerLoop(timestamp){
+function tick(now){
 
   if(!running){
-
     return;
-
   }
 
 
-  const difference =
-    (timestamp - lastTime) /
+  const dt =
+    (now - last) /
     1000;
 
 
-  lastTime =
-    timestamp;
-
-
-  const previous =
-    remaining;
+  last =
+    now;
 
 
   remaining -=
-    difference;
+    dt;
 
 
   /*
-    HABIS.
+    WAKTU HABIS
   */
 
   if(
@@ -1786,22 +1489,19 @@ function timerLoop(timestamp){
     remaining =
       0;
 
+
     render();
 
-    finishTimer();
+
+    finish();
+
 
     return;
 
   }
 
 
-  const previousSecond =
-    Math.ceil(
-      previous
-    );
-
-
-  const currentSecond =
+  const seconds =
     Math.ceil(
       remaining
     );
@@ -1814,8 +1514,7 @@ function timerLoop(timestamp){
   */
 
   if(
-    previousSecond > 300 &&
-    currentSecond <= 300 &&
+    seconds <= 300 &&
     !fiveMinuteAnnounced
   ){
 
@@ -1823,31 +1522,15 @@ function timerLoop(timestamp){
       true;
 
 
-    /*
-      SUARA MANUSIA
-    */
-
     speak(
-      "Perhatian, waktu tersisa 5 menit lagi."
+      "Perhatian. Waktu tersisa lima menit."
     );
 
 
-    /*
-      Beep sesudah perintah suara
-      tidak memblokir suara.
-    */
-
-    setTimeout(
-      () => {
-
-        beep(
-          1000,
-          .15,
-          .06
-        );
-
-      },
-      700
+    beep(
+      1000,
+      .18,
+      .08
     );
 
   }
@@ -1860,8 +1543,7 @@ function timerLoop(timestamp){
   */
 
   if(
-    previousSecond > 60 &&
-    currentSecond <= 60 &&
+    seconds <= 60 &&
     !oneMinuteAnnounced
   ){
 
@@ -1870,21 +1552,14 @@ function timerLoop(timestamp){
 
 
     speak(
-      "Perhatian, waktu tersisa 1 menit lagi."
+      "Perhatian. Waktu tersisa satu menit."
     );
 
 
-    setTimeout(
-      () => {
-
-        beep(
-          1200,
-          .15,
-          .06
-        );
-
-      },
-      700
+    beep(
+      1200,
+      .18,
+      .08
     );
 
   }
@@ -1892,22 +1567,22 @@ function timerLoop(timestamp){
 
   /*
     =====================================
-    30 DETIK
+    30 DETIK TERAKHIR
     =====================================
   */
 
   if(
-    currentSecond <= 30 &&
-    currentSecond > 10
+    seconds <= 30 &&
+    seconds > 10
   ){
 
     if(
-      currentSecond !==
-      lastBeepSecond
+      seconds !==
+      lastSecondBeep
     ){
 
-      lastBeepSecond =
-        currentSecond;
+      lastSecondBeep =
+        seconds;
 
 
       beep(
@@ -1923,21 +1598,21 @@ function timerLoop(timestamp){
 
   /*
     =====================================
-    10 DETIK
+    10 DETIK TERAKHIR
     =====================================
   */
 
   if(
-    currentSecond <= 10
+    seconds <= 10
   ){
 
     if(
-      currentSecond !==
-      lastBeepSecond
+      seconds !==
+      lastSecondBeep
     ){
 
-      lastBeepSecond =
-        currentSecond;
+      lastSecondBeep =
+        seconds;
 
 
       beep(
@@ -1954,146 +1629,114 @@ function timerLoop(timestamp){
   render();
 
 
-  animationId =
+  raf =
     requestAnimationFrame(
-      timerLoop
+      tick
     );
 
 }
 
 
-/* =====================================================
+/* ========================================
    FINISH
-===================================================== */
+======================================== */
 
-function finishTimer(){
+function finish(){
 
   running =
     false;
 
 
-  if(animationId){
+  cancelAnimationFrame(
+    raf
+  );
 
-    cancelAnimationFrame(
-      animationId
-    );
 
-    animationId = 0;
+  if(
+    "speechSynthesis"
+    in window
+  ){
+
+    window.speechSynthesis.cancel();
 
   }
 
 
-  remaining =
-    0;
+  timerEl.className =
+    "timer expired";
 
 
-  render();
+  finishedEl.textContent =
+    "⏰ WAKTU HABIS";
 
 
   /*
-    Beep awal.
+    SUARA:
+    WAKTU HABIS
   */
 
-  beep(
-    1200,
-    .25,
-    .15
+  speak(
+    "Waktu habis."
   );
 
 
-  /*
-    Jangan cancel speech di sini.
-    Langsung panggil suara manusia.
-  */
-
-  finishTimerId =
-    setTimeout(
-      () => {
-
-        speak(
-          "Waktu sudah habis."
-        );
-
-
-        /*
-          Alarm setelah suara manusia.
-        */
-
-        finishTimerId =
-          setTimeout(
-            startFinalAlarm,
-            1500
-          );
-
-      },
-      350
-    );
-
-
-  $("start").textContent =
-    "▶ Mulai";
-
-}
-
-
-/* =====================================================
-   FINAL ALARM
-===================================================== */
-
-function startFinalAlarm(){
-
-  const seconds =
+  const alarmDuration =
     Math.max(
       1,
-      Math.min(
-        15,
-        Number(
-          $("alarmSec").value
-        ) || 5
+      Number(
+        $("alarmSec").value ||
+        5
       )
     );
 
 
   const end =
     Date.now() +
-    seconds * 1000;
+    alarmDuration *
+    1000;
 
 
-  function alarmLoop(){
+  const alarm =
+    () => {
 
-    if(
-      Date.now() >= end
-    ){
+      if(
+        Date.now() >=
+        end
+      ){
 
-      alarmId =
-        0;
+        return;
 
-      return;
-
-    }
-
-
-    beep(
-      1050,
-      .20,
-      .13
-    );
+      }
 
 
-    alarmId =
-      setTimeout(
-        alarmLoop,
-        350
+      beep(
+        1050,
+        .20,
+        .13
       );
 
-  }
 
+      setTimeout(
+        alarm,
+        300
+      );
 
-  alarmLoop();
+    };
 
 
   /*
-    Pindah pertanyaan.
+    Alarm dimulai sedikit setelah
+    suara "Waktu habis".
+  */
+
+  setTimeout(
+    alarm,
+    700
+  );
+
+
+  /*
+    Otomatis ke pertanyaan berikutnya
   */
 
   if(
@@ -2102,59 +1745,25 @@ function startFinalAlarm(){
     QUESTIONS.length - 1
   ){
 
-    finishTimerId =
+    alarmTimer =
       setTimeout(
         () => {
 
-          selectQuestion(
+          select(
             index + 1
           );
 
+          /*
+            Timer berikutnya
+            belum otomatis berjalan.
+          */
+
         },
-        seconds * 1000 + 1500
+
+        alarmDuration *
+        1000 +
+        700
       );
-
-  }
-
-}
-
-
-/* =====================================================
-   RESET
-===================================================== */
-
-function resetTimer(){
-
-  stopAll();
-
-
-  totalSeconds =
-    QUESTIONS[index][1] * 60;
-
-
-  remaining =
-    totalSeconds;
-
-
-  fiveMinuteAnnounced =
-    false;
-
-  oneMinuteAnnounced =
-    false;
-
-  lastBeepSecond =
-    -1;
-
-
-  if(
-    "speechSynthesis" in window
-  ){
-
-    try{
-
-      window.speechSynthesis.cancel();
-
-    }catch{}
 
   }
 
@@ -2162,246 +1771,181 @@ function resetTimer(){
   $("start").textContent =
     "▶ Mulai";
 
-  $("pause").textContent =
-    "Ⅱ Jeda";
-
-
-  render();
-
 }
 
 
-/* =====================================================
-   TEST SUARA MANUSIA
-===================================================== */
+/* ========================================
+   KONTROL UTAMA
+======================================== */
 
-$("testVoice").addEventListener(
-  "click",
-  function(){
+$("start").onclick =
+  () => {
 
-    unlockAudio();
+    running
+      ? pause()
+      : start();
 
-
-    /*
-      Tampilkan informasi voice.
-    */
-
-    const voice =
-      findIndonesianVoice();
+  };
 
 
-    if(voice){
+$("pause").onclick =
+  pause;
 
-      voiceStatus.textContent =
-        "Voice: " +
-        voice.name +
-        " (" +
-        voice.lang +
-        ")";
 
-    }
-    else{
+$("reset").onclick =
+  () => {
 
-      voiceStatus.textContent =
-        "Voice Indonesia tidak ditemukan. Menggunakan voice bawaan.";
+    stop();
+
+
+    if(
+      "speechSynthesis"
+      in window
+    ){
+
+      window.speechSynthesis.cancel();
 
     }
 
 
-    /*
-      SUARA MANUSIA LANGSUNG.
-    */
+    total =
+      QUESTIONS[index][1] *
+      60;
 
-    speak(
-      "Perhatian. Ini adalah tes suara manusia. Waktu tersisa lima menit lagi."
-    );
-
-  }
-);
-
-
-/* =====================================================
-   TEST 5 MENIT
-===================================================== */
-
-$("test5").addEventListener(
-  "click",
-  function(){
-
-    unlockAudio();
-
-    stopAll();
-
-
-    totalSeconds =
-      300;
 
     remaining =
-      300;
+      total;
 
 
     fiveMinuteAnnounced =
-      true;
+      false;
+
 
     oneMinuteAnnounced =
       false;
 
-    lastBeepSecond =
-      -1;
 
-
-    render();
-
-
-    speak(
-      "Perhatian, waktu tersisa 5 menit lagi."
-    );
-
-  }
-);
-
-
-/* =====================================================
-   TEST 1 MENIT
-===================================================== */
-
-$("test1").addEventListener(
-  "click",
-  function(){
-
-    unlockAudio();
-
-    stopAll();
-
-
-    totalSeconds =
-      60;
-
-    remaining =
-      60;
-
-
-    fiveMinuteAnnounced =
-      true;
-
-    oneMinuteAnnounced =
-      true;
-
-    lastBeepSecond =
-      -1;
-
-
-    render();
-
-
-    speak(
-      "Perhatian, waktu tersisa 1 menit lagi."
-    );
-
-  }
-);
-
-
-/* =====================================================
-   TEST 10 DETIK
-===================================================== */
-
-$("test10").addEventListener(
-  "click",
-  function(){
-
-    unlockAudio();
-
-    stopAll();
-
-
-    totalSeconds =
-      10;
-
-    remaining =
-      10;
-
-
-    fiveMinuteAnnounced =
-      true;
-
-    oneMinuteAnnounced =
-      true;
-
-    lastBeepSecond =
-      -1;
-
-
-    render();
-
-
-    startTimer();
-
-  }
-);
-
-
-/* =====================================================
-   TEST HABIS
-===================================================== */
-
-$("testEnd").addEventListener(
-  "click",
-  function(){
-
-    unlockAudio();
-
-    stopAll();
-
-
-    remaining =
-      0;
-
-
-    render();
-
-
-    finishTimer();
-
-  }
-);
-
-
-/* =====================================================
-   SLIDER TEST
-===================================================== */
-
-slider.addEventListener(
-  "input",
-  function(){
-
-    stopAll();
-
-
-    remaining =
-      Number(
-        slider.value
-      );
-
-
-    /*
-      Reset trigger supaya ketika
-      slider digeser di atas 5 menit,
-      suara bisa dipicu lagi.
-    */
-
-    fiveMinuteAnnounced =
-      remaining <= 300;
-
-    oneMinuteAnnounced =
-      remaining <= 60;
-
-    lastBeepSecond =
+    lastSecondBeep =
       -1;
 
 
     $("start").textContent =
       "▶ Mulai";
+
+
+    $("pause").textContent =
+      "Ⅱ Jeda";
+
+
+    render();
+
+  };
+
+
+$("prev").onclick =
+  () => {
+
+    select(
+      index - 1
+    );
+
+  };
+
+
+$("next").onclick =
+  () => {
+
+    select(
+      index + 1
+    );
+
+  };
+
+
+/* ========================================
+   FULLSCREEN
+======================================== */
+
+$("fullscreen").onclick =
+  () => {
+
+    if(
+      !document.fullscreenElement
+    ){
+
+      document.documentElement
+        .requestFullscreen?.();
+
+    }
+
+    else{
+
+      document
+        .exitFullscreen?.();
+
+    }
+
+  };
+
+
+/* ========================================
+   MINIMIZE DAFTAR
+======================================== */
+
+$("minimize").onclick =
+  () => {
+
+    document.body.classList.toggle(
+      "compact"
+    );
+
+
+    $("minimize").textContent =
+      document.body.classList.contains(
+        "compact"
+      )
+      ? "☰ Tampilkan Daftar"
+      : "⌁ Minimize Daftar";
+
+  };
+
+
+/* ========================================
+   TEST TIMER
+======================================== */
+
+/*
+  Slider bisa digeser manual.
+*/
+
+testSlider.addEventListener(
+  "input",
+  () => {
+
+    stop();
+
+
+    remaining =
+      Number(
+        testSlider.value
+      );
+
+
+    fiveMinuteAnnounced =
+      false;
+
+
+    oneMinuteAnnounced =
+      false;
+
+
+    lastSecondBeep =
+      -1;
+
+
+    $("start").textContent =
+      "▶ Mulai";
+
 
     $("pause").textContent =
       "Ⅱ Jeda";
@@ -2413,155 +1957,169 @@ slider.addEventListener(
 );
 
 
-/* =====================================================
-   BUTTONS
-===================================================== */
+/*
+  TEST 5 MENIT
+*/
 
-$("start").addEventListener(
-  "click",
-  function(){
+$("test5").onclick =
+  () => {
 
-    unlockAudio();
-
-    if(running){
-
-      pauseTimer();
-
-    }
-    else{
-
-      startTimer();
-
-    }
-
-  }
-);
+    stop();
 
 
-$("pause").addEventListener(
-  "click",
-  function(){
-
-    unlockAudio();
-
-    pauseTimer();
-
-  }
-);
+    remaining =
+      300;
 
 
-$("reset").addEventListener(
-  "click",
-  resetTimer
-);
+    fiveMinuteAnnounced =
+      true;
 
 
-$("prev").addEventListener(
-  "click",
-  function(){
-
-    selectQuestion(
-      index - 1
-    );
-
-  }
-);
+    oneMinuteAnnounced =
+      false;
 
 
-$("next").addEventListener(
-  "click",
-  function(){
-
-    selectQuestion(
-      index + 1
-    );
-
-  }
-);
+    lastSecondBeep =
+      -1;
 
 
-/* =====================================================
-   FULLSCREEN
-===================================================== */
-
-$("fullscreen").addEventListener(
-  "click",
-  async function(){
-
-    try{
-
-      if(
-        !document.fullscreenElement
-      ){
-
-        await document.documentElement
-          .requestFullscreen();
-
-      }
-      else{
-
-        await document.exitFullscreen();
-
-      }
-
-    }catch(error){
-
-      console.warn(
-        "Fullscreen:",
-        error
-      );
-
-    }
-
-  }
-);
+    render();
 
 
-/* =====================================================
-   MINIMIZE
-===================================================== */
+    /*
+      Suara langsung
+    */
 
-$("minimize").addEventListener(
-  "click",
-  function(){
-
-    document.body.classList.toggle(
-      "compact"
+    speak(
+      "Perhatian. Waktu tersisa lima menit."
     );
 
 
-    const compact =
-      document.body.classList.contains(
-        "compact"
-      );
+    beep(
+      1000,
+      .18,
+      .08
+    );
+
+  };
 
 
-    $("minimize").textContent =
-      compact
-        ? "☰ Tampilkan Daftar"
-        : "⌁ Minimize Daftar";
+/*
+  TEST 1 MENIT
+*/
 
-  }
-);
+$("test1").onclick =
+  () => {
+
+    stop();
 
 
-/* =====================================================
-   KEYBOARD
-===================================================== */
+    remaining =
+      60;
+
+
+    fiveMinuteAnnounced =
+      true;
+
+
+    oneMinuteAnnounced =
+      true;
+
+
+    lastSecondBeep =
+      -1;
+
+
+    render();
+
+
+    speak(
+      "Perhatian. Waktu tersisa satu menit."
+    );
+
+
+    beep(
+      1200,
+      .18,
+      .08
+    );
+
+  };
+
+
+/*
+  TEST 10 DETIK
+*/
+
+$("test10").onclick =
+  () => {
+
+    stop();
+
+
+    remaining =
+      10;
+
+
+    fiveMinuteAnnounced =
+      true;
+
+
+    oneMinuteAnnounced =
+      true;
+
+
+    lastSecondBeep =
+      -1;
+
+
+    render();
+
+
+    start();
+
+  };
+
+
+/*
+  TEST WAKTU HABIS
+*/
+
+$("testEnd").onclick =
+  () => {
+
+    stop();
+
+
+    remaining =
+      0;
+
+
+    render();
+
+
+    finish();
+
+  };
+
+
+/* ========================================
+   KEYBOARD SHORTCUT
+======================================== */
 
 document.addEventListener(
   "keydown",
-  function(event){
+  event => {
 
-    const activeTag =
-      document.activeElement
-        ? document.activeElement.tagName
-        : "";
-
+    /*
+      Jangan jalankan shortcut
+      ketika sedang mengetik input.
+    */
 
     if(
-      activeTag === "INPUT" ||
-      activeTag === "TEXTAREA"
+      ["INPUT"].includes(
+        document.activeElement.tagName
+      )
     ){
 
       return;
@@ -2569,61 +2127,78 @@ document.addEventListener(
     }
 
 
+    /*
+      SPACE
+    */
+
     if(
-      event.code === "Space"
+      event.code ===
+      "Space"
     ){
 
       event.preventDefault();
 
-      unlockAudio();
 
-      if(running){
-
-        pauseTimer();
-
-      }
-      else{
-
-        startTimer();
-
-      }
+      running
+        ? pause()
+        : start();
 
     }
 
 
+    /*
+      LEFT
+    */
+
     else if(
-      event.key === "ArrowLeft"
+      event.key ===
+      "ArrowLeft"
     ){
 
-      selectQuestion(
+      select(
         index - 1
       );
 
     }
 
 
+    /*
+      RIGHT
+    */
+
     else if(
-      event.key === "ArrowRight"
+      event.key ===
+      "ArrowRight"
     ){
 
-      selectQuestion(
+      select(
         index + 1
       );
 
     }
 
 
+    /*
+      R
+    */
+
     else if(
-      event.key.toLowerCase() === "r"
+      event.key.toLowerCase()
+      === "r"
     ){
 
-      resetTimer();
+      $("reset").click();
 
     }
 
 
+    /*
+      F
+    */
+
     else if(
-      event.key.toLowerCase() === "f"
+      event.key.toLowerCase()
+      === "f"
     ){
 
       $("fullscreen").click();
@@ -2631,8 +2206,13 @@ document.addEventListener(
     }
 
 
+    /*
+      M
+    */
+
     else if(
-      event.key.toLowerCase() === "m"
+      event.key.toLowerCase()
+      === "m"
     ){
 
       $("minimize").click();
@@ -2643,42 +2223,35 @@ document.addEventListener(
 );
 
 
-/* =====================================================
-   CLOCK
-===================================================== */
-
-function updateClock(){
-
-  const now =
-    new Date();
-
-
-  $("clock").textContent =
-    new Intl.DateTimeFormat(
-      "id-ID",
-      {
-        hour:"2-digit",
-        minute:"2-digit",
-        second:"2-digit"
-      }
-    ).format(now);
-
-}
-
-
-updateClock();
+/* ========================================
+   JAM
+======================================== */
 
 setInterval(
-  updateClock,
+  () => {
+
+    $("clock").textContent =
+      new Intl.DateTimeFormat(
+        "id-ID",
+        {
+          hour:"2-digit",
+          minute:"2-digit",
+          second:"2-digit"
+        }
+      ).format(
+        new Date()
+      );
+
+  },
   500
 );
 
 
-/* =====================================================
+/* ========================================
    INITIALIZE
-===================================================== */
+======================================== */
 
-renderQuestionList();
+renderList();
 
 render();
 
