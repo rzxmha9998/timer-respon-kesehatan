@@ -35,7 +35,7 @@ body{
 }
 
 .app{
-  width:min(1200px,100%);
+  width:min(1100px,100%);
   display:grid;
   grid-template-columns:1.5fr .8fr;
   gap:18px;
@@ -98,7 +98,6 @@ h1{
 
 .timer.warning{
   color:var(--warning);
-  animation:warningPulse 1s infinite alternate;
 }
 
 .timer.danger{
@@ -116,23 +115,15 @@ h1{
   animation:expiredFlash .28s infinite alternate;
 }
 
-@keyframes warningPulse{
-  from{
-    text-shadow:0 0 0 rgba(255,189,74,0);
-  }
-  to{
-    text-shadow:0 0 25px rgba(255,189,74,.35);
-  }
-}
-
 @keyframes pulse{
   from{
     transform:scale(1);
     text-shadow:0 0 0 rgba(255,77,95,0);
   }
+
   to{
     transform:scale(1.025);
-    text-shadow:0 0 35px rgba(255,77,95,.45);
+    text-shadow:0 0 35px rgba(255,77,95,.4);
   }
 }
 
@@ -141,10 +132,11 @@ h1{
     transform:scale(1);
     opacity:1;
   }
+
   to{
-    transform:scale(1.07);
-    opacity:.4;
-    text-shadow:0 0 50px rgba(255,77,95,.9);
+    transform:scale(1.06);
+    opacity:.45;
+    text-shadow:0 0 45px rgba(255,77,95,.8);
   }
 }
 
@@ -153,10 +145,11 @@ h1{
     transform:scale(1);
     opacity:1;
   }
+
   to{
-    transform:scale(1.07);
+    transform:scale(1.06);
     opacity:.3;
-    text-shadow:0 0 65px rgba(255,77,95,1);
+    text-shadow:0 0 60px rgba(255,77,95,1);
   }
 }
 
@@ -317,69 +310,7 @@ input[type=number]{
   padding:8px;
 }
 
-
-/* ==========================================
-   TEST TIMER
-========================================== */
-
-.test-panel{
-  margin-top:20px;
-  padding:18px;
-  border-radius:16px;
-  background:rgba(255,255,255,.035);
-  border:1px solid rgba(255,255,255,.07);
-}
-
-.test-title{
-  font-size:13px;
-  font-weight:900;
-  color:var(--accent);
-  letter-spacing:.06em;
-  margin-bottom:12px;
-}
-
-#testSlider{
-  width:100%;
-  accent-color:var(--accent);
-  cursor:pointer;
-}
-
-.test-time{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  color:var(--muted);
-  font-size:13px;
-  margin:7px 0 12px;
-}
-
-.test-time strong{
-  color:white;
-  font-size:18px;
-  font-variant-numeric:tabular-nums;
-}
-
-.test-buttons{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:8px;
-}
-
-.test-buttons button{
-  padding:11px 8px;
-  font-size:12px;
-}
-
-.test-danger{
-  background:#4a1d27;
-  color:#fff;
-}
-
-
-/* ==========================================
-   MINIMIZE
-========================================== */
-
+/* MINIMIZE DAFTAR */
 body.compact .app{
   grid-template-columns:1fr;
   max-width:1500px;
@@ -414,13 +345,6 @@ body.compact .controls{
   margin-right:auto;
 }
 
-body.compact .test-panel{
-  max-width:1000px;
-  width:100%;
-  margin-left:auto;
-  margin-right:auto;
-}
-
 body.compact .shortcut{
   display:none;
 }
@@ -436,16 +360,7 @@ body.compact .main{
   position:relative;
 }
 
-
-/* ==========================================
-   MOBILE
-========================================== */
-
 @media(max-width:800px){
-
-  body{
-    padding:12px;
-  }
 
   .app{
     grid-template-columns:1fr;
@@ -467,10 +382,6 @@ body.compact .main{
     font-size:90px;
   }
 
-  .test-buttons{
-    grid-template-columns:1fr 1fr;
-  }
-
   body.compact .main{
     min-height:100vh;
     padding:28px;
@@ -488,45 +399,35 @@ body.compact .main{
 </style>
 </head>
 
-
 <body>
 
 <div class="app">
 
-
 <section class="card main">
 
   <div class="top">
-
     <div class="badge">
       TIMER RESPON KESEHATAN
     </div>
 
     <div id="clock" class="badge"></div>
-
   </div>
-
 
   <h1 id="title">
     Pertanyaan 1 dari 12
   </h1>
 
-
   <p id="question" class="question"></p>
-
 
   <div id="timer" class="timer">
     10:00
   </div>
 
-
   <div id="progress" class="progress">
     <div id="bar"></div>
   </div>
 
-
   <div class="meta">
-
     <span id="elapsed">
       0:00
     </span>
@@ -534,14 +435,9 @@ body.compact .main{
     <span id="durationLabel">
       10 menit
     </span>
-
   </div>
 
-
   <div id="finished" class="finished"></div>
-
-
-  <!-- KONTROL -->
 
   <div class="controls">
 
@@ -558,7 +454,6 @@ body.compact .main{
     </button>
 
   </div>
-
 
   <div
     class="controls"
@@ -583,68 +478,12 @@ body.compact .main{
 
   </div>
 
-
-  <!-- TEST TIMER -->
-
-  <div class="test-panel">
-
-    <div class="test-title">
-      🧪 TEST TIMER & SUARA
-    </div>
-
-    <input
-      id="testSlider"
-      type="range"
-      min="0"
-      max="1800"
-      value="600"
-      step="1"
-    >
-
-    <div class="test-time">
-
-      <span>
-        Geser waktu:
-      </span>
-
-      <strong id="testSliderValue">
-        10:00
-      </strong>
-
-    </div>
-
-
-    <div class="test-buttons">
-
-      <button id="test5">
-        🔊 5 Menit
-      </button>
-
-      <button id="test1">
-        🔊 1 Menit
-      </button>
-
-      <button id="test10">
-        🔊 10 Detik
-      </button>
-
-      <button id="testEnd" class="test-danger">
-        🔊 Waktu Habis
-      </button>
-
-    </div>
-
-  </div>
-
-
   <div class="shortcut">
     Spasi = mulai/jeda · ←/→ = pindah · R = ulangi · F = fullscreen · M = minimize
   </div>
 
 </section>
 
-
-<!-- SIDEBAR -->
 
 <aside class="card side">
 
@@ -657,35 +496,17 @@ body.compact .main{
   <div class="settings">
 
     <label>
-
       Suara
-
-      <input
-        id="sound"
-        type="checkbox"
-        checked
-      >
-
+      <input id="sound" type="checkbox" checked>
     </label>
 
-
     <label>
-
       Otomatis lanjut setelah waktu habis
-
-      <input
-        id="autoNext"
-        type="checkbox"
-        checked
-      >
-
+      <input id="autoNext" type="checkbox" checked>
     </label>
 
-
     <label>
-
       Durasi alarm akhir
-
       <input
         id="alarmSec"
         type="number"
@@ -693,7 +514,6 @@ body.compact .main{
         max="15"
         value="5"
       >
-
     </label>
 
   </div>
@@ -704,11 +524,6 @@ body.compact .main{
 
 
 <script>
-
-
-/* ==========================================
-   PERTANYAAN
-========================================== */
 
 const QUESTIONS = [
 
@@ -775,10 +590,6 @@ const QUESTIONS = [
 ];
 
 
-/* ==========================================
-   STATE
-========================================== */
-
 let index = 0;
 
 let total =
@@ -796,6 +607,13 @@ let alarmTimer = 0;
 
 let audioCtx = null;
 
+
+/*
+  PENANDA SUARA
+  supaya suara 5 menit dan 1 menit
+  hanya keluar satu kali.
+*/
+
 let fiveMinuteAnnounced = false;
 
 let oneMinuteAnnounced = false;
@@ -803,12 +621,9 @@ let oneMinuteAnnounced = false;
 let lastSecondBeep = -1;
 
 
-/* ==========================================
-   ELEMENT
-========================================== */
+const $ = id =>
+  document.getElementById(id);
 
-const $ =
-  id => document.getElementById(id);
 
 const timerEl =
   $("timer");
@@ -834,16 +649,10 @@ const listEl =
 const finishedEl =
   $("finished");
 
-const testSlider =
-  $("testSlider");
 
-const testSliderValue =
-  $("testSliderValue");
-
-
-/* ==========================================
-   FORMAT
-========================================== */
+/*
+  FORMAT TIMER
+*/
 
 function fmt(sec){
 
@@ -868,9 +677,9 @@ function fmt(sec){
 }
 
 
-/* ==========================================
-   SUARA MANUSIA
-========================================== */
+/*
+  TEXT TO SPEECH
+*/
 
 function speak(text){
 
@@ -889,17 +698,13 @@ function speak(text){
     const speech =
       new SpeechSynthesisUtterance(text);
 
-    speech.lang =
-      "id-ID";
+    speech.lang = "id-ID";
 
-    speech.rate =
-      .85;
+    speech.rate = .92;
 
-    speech.pitch =
-      1;
+    speech.pitch = 1;
 
-    speech.volume =
-      1;
+    speech.volume = 1;
 
     window.speechSynthesis.speak(
       speech
@@ -910,14 +715,14 @@ function speak(text){
 }
 
 
-/* ==========================================
-   BEEP
-========================================== */
+/*
+  BUNYI BEEP
+*/
 
 function beep(
-  frequency=880,
-  duration=.08,
-  volume=.05
+  frequency = 880,
+  duration = .08,
+  volume = .05
 ){
 
   if(!$("sound").checked){
@@ -979,23 +784,22 @@ function beep(
 }
 
 
-/* ==========================================
-   RENDER
-========================================== */
+/*
+  RENDER
+*/
 
 function render(){
 
   const [
     question,
     minutes
-  ] =
-    QUESTIONS[index];
+  ] = QUESTIONS[index];
 
   total =
     minutes * 60;
 
   titleEl.textContent =
-    `Pertanyaan ${index+1} dari ${QUESTIONS.length}`;
+    `Pertanyaan ${index + 1} dari ${QUESTIONS.length}`;
 
   qEl.textContent =
     question;
@@ -1007,7 +811,9 @@ function render(){
     fmt(remaining);
 
 
-  /* WARNA */
+  /*
+    WARNA TIMER
+  */
 
   if(remaining <= 0){
 
@@ -1045,7 +851,9 @@ function render(){
   }
 
 
-  /* PROGRESS */
+  /*
+    PROGRESS BAR
+  */
 
   bar.style.width =
     `${Math.max(
@@ -1079,7 +887,9 @@ function render(){
 
 
   elapsedEl.textContent =
-    fmt(total - remaining);
+    fmt(
+      total - remaining
+    );
 
 
   finishedEl.textContent =
@@ -1101,37 +911,21 @@ function render(){
     }
   );
 
-
-  /* TEST SLIDER */
-
-  if(testSlider){
-
-    testSlider.value =
-      Math.max(
-        0,
-        Math.min(
-          total,
-          remaining
-        )
-      );
-
-    testSliderValue.textContent =
-      fmt(remaining);
-
-  }
-
 }
 
 
-/* ==========================================
-   LIST
-========================================== */
+/*
+  DAFTAR PERTANYAAN
+*/
 
 function renderList(){
 
   listEl.innerHTML =
     QUESTIONS.map(
-      ([question,minutes],i) => `
+      (
+        [question,minutes],
+        i
+      ) => `
 
       <div
         class="item ${
@@ -1143,7 +937,7 @@ function renderList(){
       >
 
         <div class="num">
-          ${i+1}
+          ${i + 1}
         </div>
 
         <div class="q">
@@ -1182,24 +976,28 @@ function renderList(){
 }
 
 
-/* ==========================================
-   STOP
-========================================== */
+/*
+  STOP
+*/
 
 function stop(){
 
   running = false;
 
-  cancelAnimationFrame(raf);
+  cancelAnimationFrame(
+    raf
+  );
 
-  clearTimeout(alarmTimer);
+  clearTimeout(
+    alarmTimer
+  );
 
 }
 
 
-/* ==========================================
-   SELECT
-========================================== */
+/*
+  PILIH PERTANYAAN
+*/
 
 function select(i){
 
@@ -1218,16 +1016,19 @@ function select(i){
     Math.max(
       0,
       Math.min(
-        QUESTIONS.length-1,
+        QUESTIONS.length - 1,
         i
       )
     );
 
+
   total =
-    QUESTIONS[index][1] * 60;
+    QUESTIONS[index][1] *
+    60;
 
   remaining =
     total;
+
 
   fiveMinuteAnnounced =
     false;
@@ -1238,11 +1039,13 @@ function select(i){
   lastSecondBeep =
     -1;
 
+
   $("start").textContent =
     "▶ Mulai";
 
   $("pause").textContent =
     "Ⅱ Jeda";
+
 
   render();
 
@@ -1251,19 +1054,26 @@ function select(i){
 }
 
 
-/* ==========================================
-   START
-========================================== */
+/*
+  MULAI
+*/
 
 function start(){
 
-  if(remaining <= 0){
+  if(
+    remaining <= 0
+  ){
 
     remaining =
       total;
 
   }
 
+
+  /*
+    Inisialisasi audio
+    setelah klik pengguna.
+  */
 
   if(
     !audioCtx &&
@@ -1285,10 +1095,26 @@ function start(){
   }
 
 
+  /*
+    Pastikan speech synthesis
+    juga sudah siap.
+  */
+
+  if(
+    "speechSynthesis"
+    in window
+  ){
+
+    window.speechSynthesis.cancel();
+
+  }
+
+
   running = true;
 
   last =
     performance.now();
+
 
   $("start").textContent =
     "↻ Berjalan";
@@ -1296,11 +1122,13 @@ function start(){
   $("pause").textContent =
     "Ⅱ Jeda";
 
+
   beep(
     660,
     .08,
     .04
   );
+
 
   raf =
     requestAnimationFrame(
@@ -1310,9 +1138,9 @@ function start(){
 }
 
 
-/* ==========================================
-   PAUSE
-========================================== */
+/*
+  JEDA
+*/
 
 function pause(){
 
@@ -1324,12 +1152,17 @@ function pause(){
 
   }
 
+
   running = false;
 
-  cancelAnimationFrame(raf);
+  cancelAnimationFrame(
+    raf
+  );
+
 
   $("pause").textContent =
     "▶ Lanjut";
+
 
   beep(
     440,
@@ -1340,9 +1173,9 @@ function pause(){
 }
 
 
-/* ==========================================
-   TIMER
-========================================== */
+/*
+  TIMER LOOP
+*/
 
 function tick(now){
 
@@ -1350,18 +1183,23 @@ function tick(now){
     return;
   }
 
-  const dt =
-    (now-last)/1000;
 
-  last =
-    now;
+  const dt =
+    (now - last) /
+    1000;
+
+  last = now;
 
   remaining -= dt;
 
 
-  /* WAKTU HABIS */
+  /*
+    WAKTU HABIS
+  */
 
-  if(remaining <= 0){
+  if(
+    remaining <= 0
+  ){
 
     remaining = 0;
 
@@ -1375,17 +1213,20 @@ function tick(now){
 
 
   const seconds =
-    Math.ceil(remaining);
+    Math.ceil(
+      remaining
+    );
 
 
   /*
-    ======================================
-    5 MENIT
-    ======================================
+    =================================
+    PERINGATAN 5 MENIT
+    =================================
   */
 
   if(
     seconds <= 300 &&
+    seconds > 299 &&
     !fiveMinuteAnnounced
   ){
 
@@ -1396,23 +1237,31 @@ function tick(now){
       "Perhatian. Waktu tersisa lima menit."
     );
 
-    beep(
-      1000,
-      .18,
-      .08
+    /*
+      Beep tambahan
+    */
+
+    setTimeout(
+      () => beep(
+        1000,
+        .18,
+        .08
+      ),
+      100
     );
 
   }
 
 
   /*
-    ======================================
-    1 MENIT
-    ======================================
+    =================================
+    PERINGATAN 1 MENIT
+    =================================
   */
 
   if(
     seconds <= 60 &&
+    seconds > 59 &&
     !oneMinuteAnnounced
   ){
 
@@ -1423,19 +1272,22 @@ function tick(now){
       "Perhatian. Waktu tersisa satu menit."
     );
 
-    beep(
-      1200,
-      .18,
-      .08
+    setTimeout(
+      () => beep(
+        1200,
+        .18,
+        .08
+      ),
+      100
     );
 
   }
 
 
   /*
-    ======================================
-    30 DETIK
-    ======================================
+    =================================
+    30 DETIK TERAKHIR
+    =================================
   */
 
   if(
@@ -1443,13 +1295,18 @@ function tick(now){
     seconds > 10
   ){
 
+    const second =
+      Math.ceil(
+        remaining
+      );
+
     if(
-      seconds !==
+      second !==
       lastSecondBeep
     ){
 
       lastSecondBeep =
-        seconds;
+        second;
 
       beep(
         1000,
@@ -1463,12 +1320,16 @@ function tick(now){
 
 
   /*
-    ======================================
-    10 DETIK
-    ======================================
+    =================================
+    10 DETIK TERAKHIR
+    =================================
+
+    Bunyi setiap detik.
   */
 
-  if(seconds <= 10){
+  if(
+    seconds <= 10
+  ){
 
     if(
       seconds !==
@@ -1491,6 +1352,7 @@ function tick(now){
 
   render();
 
+
   raf =
     requestAnimationFrame(
       tick
@@ -1499,23 +1361,23 @@ function tick(now){
 }
 
 
-/* ==========================================
-   WAKTU HABIS
-========================================== */
+/*
+  =================================
+  WAKTU HABIS
+  =================================
+*/
 
 function finish(){
 
   running = false;
 
-  cancelAnimationFrame(raf);
-
-  remaining = 0;
-
-  render();
+  cancelAnimationFrame(
+    raf
+  );
 
 
   /*
-    Hentikan ucapan lain.
+    Hentikan suara sebelumnya.
   */
 
   if(
@@ -1529,143 +1391,104 @@ function finish(){
 
 
   /*
-    ======================================
-    SUARA MANUSIA
-    "Waktu habis."
-    ======================================
+    Tampilkan status waktu habis.
   */
 
-  if(
-    $("sound").checked &&
-    "speechSynthesis"
-    in window
-  ){
+  timerEl.className =
+    "timer expired";
 
-    /*
-      Beep perhatian
-    */
-
-    beep(
-      1200,
-      .25,
-      .15
-    );
-
-
-    /*
-      Suara manusia
-    */
-
-    setTimeout(
-      () => {
-
-        const speech =
-          new SpeechSynthesisUtterance(
-            "Waktu habis."
-          );
-
-        speech.lang =
-          "id-ID";
-
-        speech.rate =
-          .85;
-
-        speech.pitch =
-          1;
-
-        speech.volume =
-          1;
-
-        window.speechSynthesis.speak(
-          speech
-        );
-
-      },
-      400
-    );
-
-  }
+  finishedEl.textContent =
+    "⏰ WAKTU HABIS";
 
 
   /*
-    ======================================
-    ALARM
-    ======================================
+    SUARA UTAMA:
+    "Waktu habis."
+  */
+
+  speak(
+    "Waktu habis."
+  );
+
+
+  /*
+    Alarm beep setelah suara.
   */
 
   const alarmDuration =
     Math.max(
       1,
       Number(
-        $("alarmSec").value || 5
+        $("alarmSec").value ||
+        5
       )
     );
 
 
-  const alarmEnd =
+  const end =
     Date.now() +
-    alarmDuration * 1000;
+    alarmDuration *
+    1000;
 
 
-  const alarmLoop =
-    () => {
+  const alarm = () => {
 
-      if(
-        Date.now() >=
-        alarmEnd
-      ){
+    if(
+      Date.now() >=
+      end
+    ){
 
-        return;
+      return;
 
-      }
+    }
 
-      beep(
-        1050,
-        .20,
-        .13
-      );
 
-      setTimeout(
-        alarmLoop,
-        350
-      );
+    beep(
+      1050,
+      .20,
+      .13
+    );
 
-    };
+
+    setTimeout(
+      alarm,
+      300
+    );
+
+  };
 
 
   /*
-    Tunggu suara manusia
-    sebelum alarm.
+    Beri jeda sedikit agar
+    ucapan "Waktu habis"
+    terdengar terlebih dahulu.
   */
 
   setTimeout(
-    alarmLoop,
-    1800
+    alarm,
+    700
   );
 
 
   /*
-    ======================================
-    OTOMATIS PINDAH
-    ======================================
+    Otomatis pindah
+    setelah alarm selesai.
   */
 
   if(
     $("autoNext").checked &&
     index <
-    QUESTIONS.length-1
+    QUESTIONS.length - 1
   ){
 
     alarmTimer =
       setTimeout(
-        () => {
-
-          select(
-            index+1
-          );
-
-        },
-        alarmDuration * 1000 + 1800
+        () => select(
+          index + 1
+        ),
+        alarmDuration *
+        1000 +
+        700
       );
 
   }
@@ -1677,9 +1500,9 @@ function finish(){
 }
 
 
-/* ==========================================
-   BUTTON START
-========================================== */
+/*
+  MULAI
+*/
 
 $("start").onclick =
   () => {
@@ -1691,13 +1514,17 @@ $("start").onclick =
   };
 
 
-/* PAUSE */
+/*
+  JEDA
+*/
 
 $("pause").onclick =
   pause;
 
 
-/* RESET */
+/*
+  ULANGI
+*/
 
 $("reset").onclick =
   () => {
@@ -1740,31 +1567,37 @@ $("reset").onclick =
   };
 
 
-/* PREVIOUS */
+/*
+  SEBELUMNYA
+*/
 
 $("prev").onclick =
   () => {
 
     select(
-      index-1
+      index - 1
     );
 
   };
 
 
-/* NEXT */
+/*
+  BERIKUTNYA
+*/
 
 $("next").onclick =
   () => {
 
     select(
-      index+1
+      index + 1
     );
 
   };
 
 
-/* FULLSCREEN */
+/*
+  FULLSCREEN
+*/
 
 $("fullscreen").onclick =
   () => {
@@ -1788,9 +1621,9 @@ $("fullscreen").onclick =
   };
 
 
-/* ==========================================
-   MINIMIZE DAFTAR
-========================================== */
+/*
+  MINIMIZE DAFTAR
+*/
 
 $("minimize").onclick =
   () => {
@@ -1798,6 +1631,7 @@ $("minimize").onclick =
     document.body.classList.toggle(
       "compact"
     );
+
 
     $("minimize").textContent =
       document.body.classList.contains(
@@ -1809,172 +1643,9 @@ $("minimize").onclick =
   };
 
 
-/* ==========================================
-   TEST SLIDER
-========================================== */
-
-testSlider.addEventListener(
-  "input",
-  () => {
-
-    stop();
-
-    remaining =
-      Number(
-        testSlider.value
-      );
-
-    fiveMinuteAnnounced =
-      remaining <= 300;
-
-    oneMinuteAnnounced =
-      remaining <= 60;
-
-    lastSecondBeep =
-      -1;
-
-    $("start").textContent =
-      "▶ Mulai";
-
-    $("pause").textContent =
-      "Ⅱ Jeda";
-
-    render();
-
-  }
-);
-
-
-/* ==========================================
-   TEST 5 MENIT
-========================================== */
-
-$("test5").onclick =
-  () => {
-
-    stop();
-
-    remaining =
-      300;
-
-    fiveMinuteAnnounced =
-      true;
-
-    oneMinuteAnnounced =
-      false;
-
-    lastSecondBeep =
-      -1;
-
-    render();
-
-
-    /*
-      SUARA MANUSIA
-    */
-
-    speak(
-      "Perhatian. Waktu tersisa lima menit."
-    );
-
-
-    beep(
-      1000,
-      .18,
-      .08
-    );
-
-  };
-
-
-/* ==========================================
-   TEST 1 MENIT
-========================================== */
-
-$("test1").onclick =
-  () => {
-
-    stop();
-
-    remaining =
-      60;
-
-    fiveMinuteAnnounced =
-      true;
-
-    oneMinuteAnnounced =
-      true;
-
-    lastSecondBeep =
-      -1;
-
-    render();
-
-
-    speak(
-      "Perhatian. Waktu tersisa satu menit."
-    );
-
-
-    beep(
-      1200,
-      .18,
-      .08
-    );
-
-  };
-
-
-/* ==========================================
-   TEST 10 DETIK
-========================================== */
-
-$("test10").onclick =
-  () => {
-
-    stop();
-
-    remaining =
-      10;
-
-    fiveMinuteAnnounced =
-      true;
-
-    oneMinuteAnnounced =
-      true;
-
-    lastSecondBeep =
-      -1;
-
-    render();
-
-    start();
-
-  };
-
-
-/* ==========================================
-   TEST WAKTU HABIS
-========================================== */
-
-$("testEnd").onclick =
-  () => {
-
-    stop();
-
-    remaining =
-      0;
-
-    render();
-
-    finish();
-
-  };
-
-
-/* ==========================================
-   KEYBOARD
-========================================== */
+/*
+  KEYBOARD
+*/
 
 document.addEventListener(
   "keydown",
@@ -1991,6 +1662,10 @@ document.addEventListener(
     }
 
 
+    /*
+      SPACE
+    */
+
     if(
       event.code ===
       "Space"
@@ -2004,16 +1679,26 @@ document.addEventListener(
 
     }
 
+
+    /*
+      KIRI
+    */
+
     else if(
       event.key ===
       "ArrowLeft"
     ){
 
       select(
-        index-1
+        index - 1
       );
 
     }
+
+
+    /*
+      KANAN
+    */
 
     else if(
       event.key ===
@@ -2021,10 +1706,15 @@ document.addEventListener(
     ){
 
       select(
-        index+1
+        index + 1
       );
 
     }
+
+
+    /*
+      R = RESET
+    */
 
     else if(
       event.key.toLowerCase()
@@ -2035,6 +1725,11 @@ document.addEventListener(
 
     }
 
+
+    /*
+      F = FULLSCREEN
+    */
+
     else if(
       event.key.toLowerCase()
       === "f"
@@ -2043,6 +1738,11 @@ document.addEventListener(
       $("fullscreen").click();
 
     }
+
+
+    /*
+      M = MINIMIZE
+    */
 
     else if(
       event.key.toLowerCase()
@@ -2057,9 +1757,9 @@ document.addEventListener(
 );
 
 
-/* ==========================================
-   JAM
-========================================== */
+/*
+  JAM REAL-TIME
+*/
 
 setInterval(
   () => {
@@ -2081,9 +1781,9 @@ setInterval(
 );
 
 
-/* ==========================================
-   INITIALIZE
-========================================== */
+/*
+  INITIALIZE
+*/
 
 renderList();
 
