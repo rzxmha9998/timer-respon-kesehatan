@@ -608,6 +608,10 @@ body.compact .main{
 
     <div class="test-buttons">
 
+      <button id="testVoice" class="primary">
+        🗣️ Test Suara Manusia
+      </button>
+
       <button id="test5">
         🔊 5 Menit
       </button>
@@ -878,66 +882,100 @@ function fmt(sec){
 
 
 /* ========================================
-   TEXT TO SPEECH
+   TEXT TO SPEECH - ROBUST
 ======================================== */
 
-function speak(text){
+let speechVoices = [];
+let speechKeepAlive = null;
+let speechReady = false;
 
-  if(
-    !$("sound").checked
-  ){
-
-    return;
-
-  }
-
-
-  if(
-    !("speechSynthesis" in window)
-  ){
-
-    return;
-
-  }
-
-
-  try{
-
-    window.speechSynthesis.cancel();
-
-
-    const speech =
-      new SpeechSynthesisUtterance(
-        text
-      );
-
-
-    speech.lang =
-      "id-ID";
-
-
-    speech.rate =
-      .92;
-
-
-    speech.pitch =
-      1;
-
-
-    speech.volume =
-      1;
-
-
-    window.speechSynthesis.speak(
-      speech
-    );
-
-  }
-
-  catch{}
-
+function loadSpeechVoices(){
+  if(!("speechSynthesis" in window)) return;
+  speechVoices = window.speechSynthesis.getVoices() || [];
+  speechReady = true;
 }
 
+if("speechSynthesis" in window){
+  loadSpeechVoices();
+  window.speechSynthesis.addEventListener("voiceschanged", loadSpeechVoices);
+}
+
+function getIndonesianVoice(){
+  loadSpeechVoices();
+
+  return speechVoices.find(v =>
+    String(v.lang).toLowerCase().replace("_","-") === "id-id"
+  ) || speechVoices.find(v =>
+    String(v.lang).toLowerCase().replace("_","-").startsWith("id")
+  ) || speechVoices.find(v =>
+    /indonesia|indonesian/i.test(String(v.name))
+  ) || speechVoices[0] || null;
+}
+
+function warmSpeechEngine(){
+  if(!$("sound").checked || !("speechSynthesis" in window)) return;
+
+  try{
+    const synth = window.speechSynthesis;
+    synth.resume();
+    loadSpeechVoices();
+
+    /*
+      Chrome kadang menghentikan speech engine setelah
+      halaman lama tidak berbicara. Resume berkala menjaga
+      engine tetap aktif selama timer berjalan.
+    */
+    clearInterval(speechKeepAlive);
+    speechKeepAlive = setInterval(() => {
+      try{
+        if(synth.paused) synth.resume();
+      }catch{}
+    }, 10000);
+  }catch{}
+}
+
+function stopSpeechKeepAlive(){
+  clearInterval(speechKeepAlive);
+  speechKeepAlive = null;
+}
+
+function speak(text){
+  if(!$("sound").checked) return;
+  if(!("speechSynthesis" in window)) return;
+
+  try{
+    const synth = window.speechSynthesis;
+    synth.resume();
+    loadSpeechVoices();
+
+    const voice = getIndonesianVoice();
+    const speech = new SpeechSynthesisUtterance(text);
+
+    speech.lang = voice ? voice.lang : "id-ID";
+    if(voice) speech.voice = voice;
+    speech.rate = .86;
+    speech.pitch = 1;
+    speech.volume = 1;
+
+    /* Jangan cancel speech lain di sini. */
+    speech.onstart = () => synth.resume();
+    speech.onend = () => synth.resume();
+    speech.onerror = () => {
+      /* Coba sekali lagi jika engine mengalami error sementara. */
+      setTimeout(() => {
+        try{
+          synth.resume();
+          synth.speak(new SpeechSynthesisUtterance(text));
+        }catch{}
+      }, 150);
+    };
+
+    synth.speak(speech);
+    synth.resume();
+  }catch(error){
+    console.warn("Speech synthesis error:", error);
+  }
+}
 
 /* ========================================
    BEEP
@@ -1036,10 +1074,6 @@ function render(){
     minutes
   ] =
     QUESTIONS[index];
-
-
-  total =
-    minutes * 60;
 
 
   titleEl.textContent =
@@ -1348,74 +1382,37 @@ function select(i){
 
 function start(){
 
-  if(
-    remaining <= 0
-  ){
-
-    remaining =
-      total;
-
+  if(remaining <= 0){
+    remaining = total;
   }
 
-
-  /*
-    Browser mengizinkan audio
-    setelah interaksi pengguna.
-  */
-
-  if(
-    !audioCtx &&
-    $("sound").checked
-  ){
-
-    try{
-
-      audioCtx =
-        new (
-          window.AudioContext ||
-          window.webkitAudioContext
-        )();
-
-
-      audioCtx.resume();
-
+  /* Interaksi pengguna ini membuka izin audio/speech browser. */
+  try{
+    if(!audioCtx && $("sound").checked){
+      audioCtx = new (
+        window.AudioContext || window.webkitAudioContext
+      )();
     }
+    if(audioCtx && audioCtx.state === "suspended"){
+      audioCtx.resume();
+    }
+  }catch{}
 
-    catch{}
+  warmSpeechEngine();
 
-  }
+  running = true;
+  last = performance.now();
 
+  /* Simpan nilai display sebelum timer bergerak. */
+  lastSecondBeep = Math.ceil(remaining);
 
-  running =
-    true;
+  $("start").textContent = "↻ Berjalan";
+  $("pause").textContent = "Ⅱ Jeda";
 
+  beep(660,.08,.04);
 
-  last =
-    performance.now();
-
-
-  $("start").textContent =
-    "↻ Berjalan";
-
-
-  $("pause").textContent =
-    "Ⅱ Jeda";
-
-
-  beep(
-    660,
-    .08,
-    .04
-  );
-
-
-  raf =
-    requestAnimationFrame(
-      tick
-    );
-
+  raf = requestAnimationFrame(tick);
 }
-
 
 /* ========================================
    PAUSE
@@ -1460,182 +1457,60 @@ function pause(){
 
 function tick(now){
 
-  if(!running){
-    return;
-  }
+  if(!running) return;
 
+  const dt = (now - last) / 1000;
+  last = now;
 
-  const dt =
-    (now - last) /
-    1000;
+  const previousRemaining = remaining;
+  const previousDisplaySecond = Math.ceil(previousRemaining);
 
-
-  last =
-    now;
-
-
-  remaining -=
-    dt;
-
+  remaining -= dt;
 
   /*
-    WAKTU HABIS
+    Tampilkan 05:00 tepat ketika angka display mencapai 300.
+    Trigger berdasarkan perpindahan angka, bukan equality waktu float.
   */
+  const currentDisplaySecond = Math.max(0, Math.ceil(remaining));
 
-  if(
-    remaining <= 0
-  ){
-
-    remaining =
-      0;
-
-
+  if(previousDisplaySecond > 300 && currentDisplaySecond <= 300 && !fiveMinuteAnnounced){
+    fiveMinuteAnnounced = true;
     render();
+    speak("Perhatian. Waktu tersisa lima menit lagi.");
+    beep(1000,.18,.08);
+  }
 
+  if(previousDisplaySecond > 60 && currentDisplaySecond <= 60 && !oneMinuteAnnounced){
+    oneMinuteAnnounced = true;
+    render();
+    speak("Perhatian. Waktu tersisa satu menit lagi.");
+    beep(1200,.18,.08);
+  }
 
+  if(remaining <= 0){
+    remaining = 0;
+    render();
     finish();
-
-
     return;
-
   }
 
-
-  const seconds =
-    Math.ceil(
-      remaining
-    );
-
-
-  /*
-    =====================================
-    5 MENIT
-    =====================================
-  */
-
-  if(
-    seconds <= 300 &&
-    !fiveMinuteAnnounced
-  ){
-
-    fiveMinuteAnnounced =
-      true;
-
-
-    speak(
-      "Perhatian. Waktu tersisa lima menit."
-    );
-
-
-    beep(
-      1000,
-      .18,
-      .08
-    );
-
-  }
-
-
-  /*
-    =====================================
-    1 MENIT
-    =====================================
-  */
-
-  if(
-    seconds <= 60 &&
-    !oneMinuteAnnounced
-  ){
-
-    oneMinuteAnnounced =
-      true;
-
-
-    speak(
-      "Perhatian. Waktu tersisa satu menit."
-    );
-
-
-    beep(
-      1200,
-      .18,
-      .08
-    );
-
-  }
-
-
-  /*
-    =====================================
-    30 DETIK TERAKHIR
-    =====================================
-  */
-
-  if(
-    seconds <= 30 &&
-    seconds > 10
-  ){
-
-    if(
-      seconds !==
-      lastSecondBeep
-    ){
-
-      lastSecondBeep =
-        seconds;
-
-
-      beep(
-        1000,
-        .08,
-        .045
-      );
-
+  if(currentDisplaySecond <= 30 && currentDisplaySecond > 10){
+    if(currentDisplaySecond !== lastSecondBeep){
+      lastSecondBeep = currentDisplaySecond;
+      beep(1000,.08,.045);
     }
-
   }
 
-
-  /*
-    =====================================
-    10 DETIK TERAKHIR
-    =====================================
-  */
-
-  if(
-    seconds <= 10
-  ){
-
-    if(
-      seconds !==
-      lastSecondBeep
-    ){
-
-      lastSecondBeep =
-        seconds;
-
-
-      beep(
-        1350,
-        .13,
-        .075
-      );
-
+  if(currentDisplaySecond <= 10){
+    if(currentDisplaySecond !== lastSecondBeep){
+      lastSecondBeep = currentDisplaySecond;
+      beep(1350,.13,.075);
     }
-
   }
-
 
   render();
-
-
-  raf =
-    requestAnimationFrame(
-      tick
-    );
-
+  raf = requestAnimationFrame(tick);
 }
-
 
 /* ========================================
    FINISH
@@ -1643,136 +1518,58 @@ function tick(now){
 
 function finish(){
 
-  running =
-    false;
+  running = false;
+  cancelAnimationFrame(raf);
+  stopSpeechKeepAlive();
 
-
-  cancelAnimationFrame(
-    raf
-  );
-
-
-  if(
-    "speechSynthesis"
-    in window
-  ){
-
-    window.speechSynthesis.cancel();
-
-  }
-
-
-  timerEl.className =
-    "timer expired";
-
-
-  finishedEl.textContent =
-    "⏰ WAKTU HABIS";
-
+  timerEl.className = "timer expired";
+  finishedEl.textContent = "⏰ WAKTU HABIS";
 
   /*
-    SUARA:
-    WAKTU HABIS
+    Jangan cancel speech di sini. Pada beberapa browser,
+    cancel() tepat sebelum speak() membuat utterance tidak keluar.
   */
+  try{
+    if("speechSynthesis" in window){
+      window.speechSynthesis.resume();
+    }
+  }catch{}
 
-  speak(
-    "Waktu habis."
+  /* Beep penanda tepat saat 00:00. */
+  beep(1200,.25,.15);
+
+  /* Beri ruang agar beep selesai sebelum suara manusia. */
+  setTimeout(() => {
+    speak("Waktu sudah habis.");
+  }, 300);
+
+  const alarmDuration = Math.max(
+    1,
+    Number($("alarmSec").value || 5)
   );
 
+  const end = Date.now() + alarmDuration * 1000;
 
-  const alarmDuration =
-    Math.max(
-      1,
-      Number(
-        $("alarmSec").value ||
-        5
-      )
-    );
+  const alarm = () => {
+    if(Date.now() >= end) return;
+    beep(1050,.20,.13);
+    alarmTimer = setTimeout(alarm,300);
+  };
 
-
-  const end =
-    Date.now() +
-    alarmDuration *
-    1000;
-
-
-  const alarm =
-    () => {
-
-      if(
-        Date.now() >=
-        end
-      ){
-
-        return;
-
-      }
-
-
-      beep(
-        1050,
-        .20,
-        .13
-      );
-
-
-      setTimeout(
-        alarm,
-        300
-      );
-
-    };
-
-
-  /*
-    Alarm dimulai sedikit setelah
-    suara "Waktu habis".
-  */
-
-  setTimeout(
-    alarm,
-    700
-  );
-
-
-  /*
-    Otomatis ke pertanyaan berikutnya
-  */
+  /* Alarm setelah suara manusia mulai. */
+  setTimeout(alarm,1200);
 
   if(
     $("autoNext").checked &&
-    index <
-    QUESTIONS.length - 1
+    index < QUESTIONS.length - 1
   ){
-
-    alarmTimer =
-      setTimeout(
-        () => {
-
-          select(
-            index + 1
-          );
-
-          /*
-            Timer berikutnya
-            belum otomatis berjalan.
-          */
-
-        },
-
-        alarmDuration *
-        1000 +
-        700
-      );
-
+    alarmTimer = setTimeout(() => {
+      select(index + 1);
+    }, alarmDuration * 1000 + 1500);
   }
 
-
-  $("start").textContent =
-    "▶ Mulai";
-
+  $("start").textContent = "▶ Mulai";
 }
-
 
 /* ========================================
    KONTROL UTAMA
@@ -1958,6 +1755,22 @@ testSlider.addEventListener(
 
 
 /*
+  TEST SUARA MANUSIA
+*/
+
+$("testVoice").onclick = () => {
+  warmSpeechEngine();
+  try{
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.resume();
+  }catch{}
+  setTimeout(() => {
+    speak("Perhatian. Ini adalah tes suara manusia. Waktu tersisa lima menit lagi.");
+  },100);
+};
+
+
+/*
   TEST 5 MENIT
 */
 
@@ -1965,6 +1778,7 @@ $("test5").onclick =
   () => {
 
     stop();
+    warmSpeechEngine();
 
 
     remaining =
@@ -2012,6 +1826,7 @@ $("test1").onclick =
   () => {
 
     stop();
+    warmSpeechEngine();
 
 
     remaining =
@@ -2089,6 +1904,7 @@ $("testEnd").onclick =
   () => {
 
     stop();
+    warmSpeechEngine();
 
 
     remaining =
