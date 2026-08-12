@@ -922,11 +922,118 @@ html:fullscreen body #timer.expired{
   }
 }
 
+
+/* TIME KEEPER LOCK SCREEN */
+body.locked{overflow:hidden}
+
+#lockScreen{
+  position:fixed;inset:0;z-index:99999;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;color:#fff;
+  background:
+    radial-gradient(circle at 50% 40%,rgba(24,70,92,.32),transparent 38%),
+    radial-gradient(circle at 50% 110%,rgba(53,208,186,.08),transparent 42%),
+    #02060d;
+  transition:opacity .7s ease,visibility .7s ease;
+}
+#lockScreen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.lock-grid{
+  position:absolute;inset:0;opacity:.2;
+  background-image:linear-gradient(rgba(53,208,186,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(53,208,186,.05) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(circle,#000 0%,transparent 72%);
+}
+.lock-content{position:relative;z-index:2;width:min(440px,90vw);text-align:center}
+.lock-brand{margin-bottom:18px;color:#35d0ba;font-size:13px;font-weight:900;letter-spacing:.18em}
+.lock-title{margin:0;font-size:clamp(36px,7vw,60px);font-weight:900;letter-spacing:-.05em}
+.lock-subtitle{margin:10px 0 28px;color:#8fa5b9;font-size:14px}
+.safe{
+  position:relative;width:185px;height:185px;margin:0 auto 28px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#243b50,#0b1725 58%,#050b12);
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:inset 0 0 35px rgba(53,208,186,.08),0 0 0 10px rgba(255,255,255,.018),
+    0 0 0 20px rgba(255,255,255,.009),0 30px 90px rgba(0,0,0,.55);
+  transition:transform .55s cubic-bezier(.2,.8,.2,1),box-shadow .55s;
+}
+.safe:before{
+  content:"";position:absolute;inset:12px;border-radius:50%;
+  border:1px dashed rgba(53,208,186,.25);animation:safeRotate 18s linear infinite;
+}
+.safe:after{content:"";position:absolute;inset:27px;border-radius:50%;border:1px solid rgba(255,255,255,.045)}
+.safe.unlocked{box-shadow:inset 0 0 50px rgba(53,208,186,.18),0 0 55px rgba(53,208,186,.22),0 30px 90px rgba(0,0,0,.45)}
+@keyframes safeRotate{to{transform:rotate(360deg)}}
+@keyframes safeUnlock{0%{transform:scale(1)}25%{transform:scale(1.05) rotate(-2deg)}50%{transform:scale(.98) rotate(2deg)}100%{transform:scale(1)}}
+.safe-unlock{animation:safeUnlock .8s cubic-bezier(.2,.8,.2,1)}
+.lock-shackle{
+  position:absolute;left:50%;top:30px;width:62px;height:58px;transform:translateX(-50%);
+  border:9px solid #8094a8;border-bottom:0;border-radius:38px 38px 0 0;
+  transition:transform .6s cubic-bezier(.2,.8,.2,1),border-color .4s;
+}
+.safe.unlocked .lock-shackle{transform:translateX(-50%) translateY(-22px) rotate(-18deg);transform-origin:100% 100%;border-color:#35d0ba}
+.lock-body{
+  position:absolute;left:50%;top:78px;width:76px;height:67px;transform:translateX(-50%);
+  border-radius:14px;background:linear-gradient(145deg,#183148,#0b1724);
+  border:2px solid rgba(53,208,186,.45);box-shadow:inset 0 0 18px rgba(53,208,186,.07),0 8px 20px rgba(0,0,0,.35);
+}
+.lock-keyhole{
+  position:absolute;left:50%;top:94px;width:16px;height:24px;transform:translateX(-50%);
+  border-radius:10px;background:#35d0ba;box-shadow:0 0 15px rgba(53,208,186,.5);
+}
+.lock-keyhole:after{content:"";position:absolute;left:50%;top:15px;width:7px;height:15px;transform:translateX(-50%);border-radius:3px;background:#35d0ba}
+.lock-form{display:grid;gap:10px}
+.lock-input{
+  width:100%;padding:15px 16px;border:1px solid rgba(255,255,255,.1);border-radius:13px;
+  outline:none;background:rgba(13,27,45,.84);color:#fff;font-size:15px;text-align:center;
+}
+.lock-input:focus{border-color:rgba(53,208,186,.65);box-shadow:0 0 0 3px rgba(53,208,186,.08)}
+.lock-button{
+  width:100%;padding:15px;border:0;border-radius:13px;background:#35d0ba;color:#04221d;
+  font-size:14px;font-weight:900;cursor:pointer;transition:filter .2s,transform .2s;
+}
+.lock-button:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.lock-button:disabled{cursor:default;opacity:.8}
+.lock-status{min-height:20px;margin-top:11px;color:#8195a8;font-size:12px}
+.lock-status.error{color:#ff6977}.lock-status.success{color:#35d0ba}
+.lock-footer{margin-top:24px;color:#53697d;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.lock-attempt{animation:lockShake .35s ease}
+@keyframes lockShake{20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}100%{transform:translateX(0)}}
+@media(max-width:600px){
+  .safe{width:155px;height:155px}
+  .lock-shackle{top:24px;transform:translateX(-50%) scale(.82)}
+  .safe.unlocked .lock-shackle{transform:translateX(-50%) translateY(-18px) rotate(-18deg) scale(.82)}
+  .lock-body{top:65px;transform:translateX(-50%) scale(.82)}
+  .lock-keyhole{top:81px;transform:translateX(-50%) scale(.82)}
+}
 </style>
 </head>
 
 
 <body>
+<div id="lockScreen" aria-label="Time Keeper terkunci">
+  <div class="lock-grid"></div>
+  <div class="lock-content">
+    <div class="lock-brand">TIME KEEPER</div>
+    <h1 class="lock-title">Time Locked</h1>
+    <p class="lock-subtitle">Sistem timer terkunci. Masukkan kredensial untuk membuka akses.</p>
+
+    <div id="safe" class="safe" aria-hidden="true">
+      <div class="lock-shackle"></div>
+      <div class="lock-body"></div>
+      <div class="lock-keyhole"></div>
+    </div>
+
+    <form id="lockForm" class="lock-form" autocomplete="off">
+      <input id="lockUsername" class="lock-input" type="text" placeholder="Username" autocomplete="username" required>
+      <input id="lockPassword" class="lock-input" type="password" placeholder="Password" autocomplete="current-password" required>
+      <button id="unlockButton" class="lock-button" type="submit">🔓 UNLOCK TIME KEEPER</button>
+    </form>
+
+    <div id="lockStatus" class="lock-status">Sistem siap. Menunggu autentikasi.</div>
+    <div class="lock-footer">Secure Presentation Timer</div>
+  </div>
+</div>
+
 
 <div class="app">
 
@@ -2549,6 +2656,54 @@ setInterval(
 renderList();
 
 render();
+
+
+/* Client-side presentation lock. For real security, use server-side authentication. */
+const TIME_KEEPER_LOGIN = { username:"admin", password:"timekeeper" };
+
+const lockScreen = document.getElementById("lockScreen");
+const lockForm = document.getElementById("lockForm");
+const lockUsername = document.getElementById("lockUsername");
+const lockPassword = document.getElementById("lockPassword");
+const lockStatus = document.getElementById("lockStatus");
+const safeElement = document.getElementById("safe");
+const unlockButton = document.getElementById("unlockButton");
+
+function lockMessage(text,type=""){
+  lockStatus.textContent = text;
+  lockStatus.className = "lock-status" + (type ? ` ${type}` : "");
+}
+
+lockForm.addEventListener("submit",(event)=>{
+  event.preventDefault();
+
+  if(
+    lockUsername.value.trim() === TIME_KEEPER_LOGIN.username &&
+    lockPassword.value === TIME_KEEPER_LOGIN.password
+  ){
+    lockMessage("Akses diterima. Membuka Time Keeper...","success");
+    safeElement.classList.remove("lock-attempt");
+    safeElement.classList.add("safe-unlock","unlocked");
+    unlockButton.disabled = true;
+    unlockButton.textContent = "✓ ACCESS GRANTED";
+
+    setTimeout(()=>{
+      lockScreen.classList.add("hidden");
+      document.body.classList.remove("locked");
+      setTimeout(()=>lockScreen.remove(),750);
+    },800);
+    return;
+  }
+
+  safeElement.classList.remove("lock-attempt");
+  void safeElement.offsetWidth;
+  safeElement.classList.add("lock-attempt");
+  lockMessage("Username atau password salah.","error");
+  lockPassword.value = "";
+  lockPassword.focus();
+});
+
+window.addEventListener("load",()=>setTimeout(()=>lockUsername.focus(),150));
 
 </script>
 
